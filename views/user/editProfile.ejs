@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #333; /* Unified text color for better readability */
+}
+
+#editProfileForm {
+    max-width: 400px;
+    width: 90%; /* Slight adjustment for better responsiveness */
+    background-color: #fff;
+    padding: 30px; /* Increased padding for better spacing */
+    border-radius: 12px; /* Increased border radius for modern look */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Softened and spread the shadow for depth */
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+#editProfileForm:hover {
+    transform: translateY(-5px); /* Slight raise effect on hover */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover for depth */
+}
+
+h2 {
+    text-align: center;
+    color: #4CAF50; /* Color adjustment to match button for theme consistency */
+    margin-bottom: 20px; /* Added margin for better spacing */
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px; /* Adjusted margin for compact form */
+    color: #666; /* Slightly darker for better readability */
+    font-weight: 600; /* Added weight for clarity */
+}
+
+input, button {
+    width: 100%;
+    padding: 15px; /* Increased padding for better interaction area */
+    margin-bottom: 20px; /* Increased margin for better separation */
+    box-sizing: border-box;
+    border-radius: 6px; /* Slightly increased for modern input and button shapes */
+    transition: all 0.3s ease; /* Smooth transition for interactive elements */
+}
+
+input {
+    border: 2px solid #ccc; /* Increased border thickness for prominence */
+    background-color: #f9f9f9; /* Slightly off-white background for input for focus indication */
+}
+
+input:focus {
+    border-color: #4CAF50; /* Highlight color on focus for visual feedback */
+    outline: none; /* Removing default focus outline for custom styling */
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-weight: bold; /* Added boldness for readability */
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Added subtle shadow for depth */
+}
+
+button:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhanced shadow for interactive feedback */
+}
+
+.error-message {
+    color: #ff0000;
+    margin-bottom: 15px; /* Adjusted spacing for clarity */
+    font-size: 0.9em; /* Slightly reduced size for subtlety */
+}
+
+.error-message {
+    color: red;
+    display: none; /* Initially hide the error message */
+}
+
+    </style>
+</head>
+<body>
+
+<!-- <div class="editProfileForm">
+    <h2>Edit Profile</h2>
+   
+    <form action="/editProfile" method="POST" class="profileForm"  onsubmit="return validateForm()" >
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" value="<%=profile.username%>" >
+        <div id="firstNameError" class="error-message"></div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div> -->
+
+
+<div class="editProfileForm">
+    <h2>Edit Profile</h2>
+    <form action="/editProfile" method="POST" class="profileForm" onsubmit="return validateForm()">
+        <label for="firstName">Full Name:</label>
+        <input type="text" id="firstName" name="firstName" value="<%=profile.username%>">
+        <div id="firstNameError" class="error-message"></div>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+
+
+<script>
+    function validateForm() {
+        var firstName = document.getElementById("firstName").value;
+        var firstNameError = document.getElementById("firstNameError");
+    
+        // Reset error message
+        firstNameError.style.display = "none";
+        firstNameError.textContent = "";
+    
+        // Validate First Name: not empty, no numbers or special characters, contains capital letters, reasonable length
+        if (firstName.trim() === "") {
+            firstNameError.textContent = "First Name cannot be empty.";
+            firstNameError.style.display = "block";
+            return false;
+        }
+    
+        if (!/^[a-zA-Z ]*$/.test(firstName)) {
+            firstNameError.textContent = "First Name can only contain letters and spaces.";
+            firstNameError.style.display = "block";
+            return false;
+        }
+    
+        if (!/[A-Z]/.test(firstName)) {
+            firstNameError.textContent = "First Name must contain at least one capital letter.";
+            firstNameError.style.display = "block";
+            return false;
+        }
+    
+        if (firstName.length > 50) {
+            firstNameError.textContent = "First Name cannot be longer than 50 characters.";
+            firstNameError.style.display = "block";
+            return false;
+        }
+    
+        // Optional: Check if the first letter is capital (common naming convention)
+        if (firstName[0] !== firstName[0].toUpperCase()) {
+            firstNameError.textContent = "First Name should start with a capital letter.";
+            firstNameError.style.display = "block";
+            return false;
+        }
+    
+        // If all checks pass
+        return true; // Proceed with form submission
+    }
+    </script>
+</body>
+</html>

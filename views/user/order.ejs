@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Order Page</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Address</th>
+            <th>Final Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Order data will be populated here statically -->
+        <% product.forEach((product, index) => { %>
+        <tr>
+            <td><%= index + 1 %></td>
+            <td><%= product.productId %></td>
+            <td><%= product.productName %></td>
+            <td><%= product.quantity %></td>
+            <td><%= product.price %></td>
+            <td><%= product.address %></td>
+            <td><%= product.finalPrice %></td>
+            <td><%= product.status %></td>
+            <td><button onclick="viewDetails()">View Details</button></td>
+        </tr>
+    <% }); %>   
+
+        <!-- Add more rows for additional orders -->
+    </tbody>
+</table>
+
+<div id="orderDetailsContainer" style="display: none;">
+    <h2>Order Details</h2>
+    <div id="orderDetailsContent"></div>
+</div>
+
+<script>
+    // Function to handle viewing details
+    function viewDetails(orderId) {
+        const orderDetailsContainer = document.getElementById('orderDetailsContainer');
+        const orderDetailsContent = document.getElementById('orderDetailsContent');
+
+        // Simulated order details (replace this with actual data)
+        const orderDetails = {
+            orderId: orderId,
+            // Add other order details properties as needed
+        };
+
+        // Populate order details content
+        orderDetailsContent.innerHTML = `<p>Order ID: ${orderDetails.orderId}</p>`;
+        // Add other order details content as needed
+
+        // Display the details container
+        orderDetailsContainer.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+

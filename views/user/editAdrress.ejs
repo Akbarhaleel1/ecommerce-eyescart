@@ -1,0 +1,229 @@
+<%-include('header')-%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    integrity="sha384-ezpxIECHxu8NcytF0eSyoKb8l4F2RS0A6r4/E+4zpx2F1pDQzIRqHuY7vQAgITu" crossorigin="anonymous">
+  <title>Delivery Form</title>
+  <style>
+    .title-style {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: hsl(52, 0%, 98%);
+    }
+
+    .img-fluid {
+      position: absolute;
+      left: 0px;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+      <div class="col">
+        <div class="card my-4 shadow-3">
+          <div class="row g-0">
+            <div class="col-xl-6 d-xl-block bg-image">
+              <img src="https://mdbcdn.b-cdn.net/img/Others/extended-example/delivery.webp" alt="Sample photo" class="img-fluid" />
+              <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)"></div>
+            </div>
+            <div class="col-xl-6">
+              <form action="/edit_address/<%=address._id%>" method="POST" id="addressForm" novalidate>
+                <div class="card-body p-md-5 text-black">
+                  <h3 class="mb-4 text-uppercase">Edit Address</h3>
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                        <label class="form-label">First name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" value="<%=address.firstName%>" required />
+                        <div class="invalid-feedback">
+                          Please enter a first name.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-group">
+                        <label for="lastName" class="form-label">Last name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" value="<%=address.lastName%>" required />
+                        <div class="invalid-feedback">
+                          Please enter a last name.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-4">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" id="addressInput" name="address" class="form-control form-control-lg" value="<%=address.address%>" required />
+                    <div class="invalid-feedback">
+                      Please enter an address.
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <label for="state" class="form-label">State</label>
+                      <input type="text" id="state" name="state" class="form-control form-control-lg" value="<%=address.state%>" required />
+                      <div class="invalid-feedback" id="stateError">
+                        Please select a state.
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <label for="city" class="form-label">City</label>
+                      <input type="text" id="city" name="city" class="form-control form-control-lg" value="<%=address.city%>" required />
+                      <div class="invalid-feedback" id="cityError">
+                        Please select a city.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-4">
+                    <label for="zip" class="form-label">Zip</label>
+                    <input type="text" id="zip" name="zip" class="form-control form-control-lg" required pattern="\d{5}(-\d{4})?" value="<%=address.zip%>" />
+                    <div class="invalid-feedback" id="zipError">
+                      Please enter a valid zip code.
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end pt-3">
+                    <button type="submit" class="btn btn-success btn-lg ms-2">Save</button>
+                    <a href="/profile" class="btn btn-primary btn-lg ms-2">Cancel</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('addressForm');
+  var inputsToValidate = {
+    'firstName':  /^[A-Za-z\s]+$/,
+    'lastName':  /^[A-Za-z\s]+$/,
+    'addressInput': /^[A-Za-z0-9\s,.-]+$/, // Adjusted ID to match your HTML
+    'state':/^[A-Za-z\s]+$/,
+    'city': /^[A-Za-z\s]+$/,
+    'zip': /^[1-9]\d{4,9}$/ // Directly associating the regex with 'zip'
+  };
+
+  // Define the validation function
+  function validateInput(inputElement, regex = null) {
+    var value = inputElement.value.trim();
+    var isInvalid = value === "" || (regex !== null && !regex.test(value));
+    inputElement.classList.toggle('is-invalid', isInvalid);
+    inputElement.classList.toggle('is-valid', !isInvalid);
+    inputElement.nextElementSibling.style.display = isInvalid ? 'block' : 'none';
+    return !isInvalid;
+  }
+
+  // Attach input event listeners for real-time validation
+  Object.keys(inputsToValidate).forEach(function(inputId) {
+    var inputElement = document.getElementById(inputId);
+    inputElement.addEventListener('input', function() {
+      validateInput(inputElement, inputsToValidate[inputId]);
+    });
+  });
+
+  // Form submission handler
+  form.addEventListener('submit', function(event) {
+    var isValid = true;
+
+    Object.keys(inputsToValidate).forEach(function(inputId) {
+      var inputElement = document.getElementById(inputId);
+      isValid = validateInput(inputElement, inputsToValidate[inputId]) && isValid; // Adjusted logical operation for clarity
+    });
+
+    if (!isValid) {
+      event.preventDefault(); // Prevent form submission if any field is invalid
+    }
+  });
+});
+
+  </script>
+
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("addressForm").addEventListener("submit", function(event) {
+        var formIsValid = this.checkValidity() && validateAddressForm();
+        if (!formIsValid) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+      }, false);
+    });
+  
+    function validateAddressForm() {
+      var firstName = document.getElementById("firstName").value.trim();
+      var lastName = document.getElementById("lastName").value.trim();
+      var addressInput = document.getElementById("addressInput").value.trim();
+      var state = document.getElementById("state").value.trim();
+      var city = document.getElementById("city").value.trim();
+      var zip = document.getElementById("zip").value.trim();
+      var isValid = true;
+  
+      // Update the input fields with trimmed values
+      document.getElementById("firstName").value = firstName;
+      document.getElementById("lastName").value = lastName;
+      document.getElementById("addressInput").value = addressInput;
+      document.getElementById("state").value = state;
+      document.getElementById("city").value = city;
+      document.getElementById("zip").value = zip;
+  
+
+      var zipCodePattern = /^[1-9]\d{4}$/;
+  if (!zipCodePattern.test(zip)) {
+    document.getElementById("zip").classList.add("is-invalid");
+    isValid = false;
+  } else {
+    document.getElementById("zip").classList.remove("is-invalid");
+  }
+
+  
+      // Additional validation can be added here if needed
+      // Example: Check if the 'firstName' or other fields are empty after trimming
+      if (firstName === "") {
+        document.getElementById("firstName").classList.add("is-invalid");
+        isValid = false;
+      } else {
+        document.getElementById("firstName").classList.remove("is-invalid");
+      }
+  
+      if (lastName === "") {
+        document.getElementById("lastName").classList.add("is-invalid");
+        isValid = false;
+      } else {
+        document.getElementById("lastName").classList.remove("is-invalid");
+      }
+  
+      if (addressInput === "") {
+        document.getElementById("addressInput").classList.add("is-invalid");
+        isValid = false;
+      } else {
+        document.getElementById("addressInput").classList.remove("is-invalid");
+      }
+  
+      // Continue with state, city, and zip validations as before
+      // ...
+  
+      return isValid;
+    }
+  </script> -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
+
+
+<%-include('footer')-%>

@@ -1,0 +1,89 @@
+<%-include("header")%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .wallet-balance {
+            background-color: #f0f2f5;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .transaction-history {
+            margin-top: 20px;
+        }
+        .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #000001;
+    border-color: #060607;
+}
+.page-link {
+    position: relative;
+    display: block;
+    color: #000000;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row" style=" height: 20pc; margin-top: 90px;">
+        <div class="col-12 col-md-4" >
+            <div class="wallet-balance">
+                <h3>Wallet Balance</h3>
+                <h1>$<%=balance%></h1>
+               <a href="/walletDeposite"><button type="button" class="btn btn-success">Add Funds</button></a> 
+               <a href="/walletWithdraw"> <button type="button" class="btn btn-danger">Withdraw</button></a>
+            </div>
+        </div>
+        <div class="col-12 col-md-8" style="margin-top: -19px">
+            <div class="transaction-history">
+                <h3>Transaction History</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%transactions.forEach((item,index)=>{%>  
+                        <tr>
+                            <th scope="row"><%= (currentPage - 1) * limit + index + 1 %></th>
+                            <td><%= new Date(item.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                            <td><%=item.type%></td>
+                            <td><%=item.amount%></td>
+                        </tr>
+                        <%})%>
+                        <!-- Add more transactions here -->
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <% for(let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <%= i === currentPage ? 'active' : '' %>"><a class="page-link" href="/wallet?page=<%= i %>"><%= i %></a></li>
+                      <% } %>
+                    </ul>
+                  </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<%-include("footer")%>

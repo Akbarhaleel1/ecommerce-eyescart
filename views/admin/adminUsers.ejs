@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0042db;
+      padding-top: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar a {
+      padding: 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
+    }
+
+    .sidebar a:hover {
+      background-color: #002080;
+    }
+
+    .sidebar a.active {
+      background-color: #002080;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .logout {
+      margin-top: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      margin-top: 29px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 30px;
+      background-color: #7b7be4;
+      color: #fff;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #5a5ac5;
+    }
+
+    #table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #table th, #table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .block-btn,
+    .unblock-btn {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .block-btn {
+      background-color: #e74c3c;
+    }
+
+    .unblock-btn {
+      background-color: #2ecc71;
+    }
+
+    .block-btn:hover,
+    .unblock-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Admin Users
+</header>
+<div class="sidebar">
+  <div class="sidebar-heading"></div>
+  <a href="adminDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+  <a href="adminOrder"><i class="fas fa-shopping-cart"></i> Orders</a>
+  <a href="adminStatistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+  <a href="adminProducts"><i class="fas fa-box"></i> Products</a>
+  <a href="adminCategory"><i class="fas fa-box"></i> Category</a>
+  <a href="adminUsers" class="active"><i class="fas fa-users"></i> Users</a>
+  <a href="adminOffers"><i class="fas fa-percent"></i> Offers</a>
+  <a href="adminCoupons"><i class="fas fa-ticket-alt"></i> Coupons</a>
+  <!-- <a href="adminBanner"><i class="fas fa-scroll"></i> Banner</a> -->
+  <a href="/adminLogOut" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main-content">
+  <div class="container">
+    <table id="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr> 
+      </thead>
+      <tbody>
+        <!-- Sample user data, replace with your dynamic data -->
+        <% User.forEach((user, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td><%= user.isBlocked %></td>
+            <td>
+              <a href="/block-user/<%= user._id %>"><button class="block-btn">Block</button></a>
+              <a href="/unblock-user/<%= user._id %>"><button class="unblock-btn">Unblock</button></a>
+            </td>
+          </tr>
+        <% }) %>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // JavaScript logic for blocking and unblocking
+  function blockUser() {
+    // Replace this with your blocking logic (e.g., make an AJAX request to update user status)
+    alert("User blocked!");
+  }
+
+  function unblockUser() {
+    // Replace this with your unblocking logic (e.g., make an AJAX request to update user status)
+    alert("User unblocked!");
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<%-include('header')-%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Table</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            background: #eee;
+            font-family: 'Assistant', sans-serif;
+        }
+        .cell-1 {
+            border-collapse: separate;
+            border-spacing: 0 4em;
+            background: #fff;
+            border-bottom: 5px solid transparent;
+            background-clip: padding-box;
+        }
+        thead {
+            background: #dddcdc;
+        }
+        .badge-success {
+            background-color: #28a745;
+        }
+        .badge-info {
+            background-color: #17a2b8;
+        }
+        .badge-danger {
+            background-color: #dc3545;
+        }
+        .pagination a {
+    margin: 0 2px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #000000;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #000000;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #000000;
+}
+
+        /* Add more styles as needed */
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-12">
+                <div class="rounded">
+                    <div class="table-responsive table-borderless">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Date</th>
+                                    <th>Price</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                    <th>Order Details</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <% orders.forEach(function(order) { %>
+                                  <% order.products.forEach(function(product, index) { %>
+                                    <tr class="cell-1">
+                                      <td><%= product.productName %></td>
+                                      <td><%= product.quantity %></td>
+                                      <td><%= new Date(order.orderDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>     
+                                      <td>$<%=  product.price * product.quantity - product.discountPrice %></td>
+                                      <td>
+                                          <%= order.address.firstName %> <%= order.address.lastName %><br>
+                                          <%= order.address.address %><br>
+                                          <%= order.address.city %>, <%= order.address.state %> <%= order.address.zip %>
+                                      </td>
+                                      <td><span class="badge <%= product.statusClass %>"><%= product.status %></span></td>
+                                      <td>
+                                          <!-- Adjust conditionals for product status -->
+                                          <% if (product.status == "Pending" || product.status == "Processing" || product.status == "Shipped") { %>
+                                              <button class="btn btn-danger btn-sm" id="first" onclick="cancelOrder('<%= order._id %>', '<%= product.productid %>')">Cancel Order</button>
+                                          <% } %>
+                                          
+                                          <% if (product.status == "Delivered") { %>
+                                              <button class="btn btn-success btn-sm" onclick="returnOrder('<%= order._id %>', '<%= product.productid %>')">Return Order</button>
+                                          <% } %>
+                              
+                                          <% if (product.status == "Returned") { %>
+                                              <button class="btn btn-success btn-sm" disabled>Return Order</button>
+                                          <% } %>
+                                    
+                                          <% if(product.status == "Cancelled"){ %>
+                                              <button class="btn btn-danger btn-sm"  disabled>Cancel Order</button>
+                                          <% } %>
+                                      </td>       
+                                      <td>
+                                          
+                                              <!-- <button class="btn btn-primary btn-sm" onclick="location.href='/orderDetails/<%= order._id %>'">Details</button> -->
+                                              <button class="btn btn-primary btn-sm" onclick="location.href='/orderDetails/<%= order._id %>/<%= product.productid %>'">Details</button>
+
+                                          
+                                      </td>
+                                    </tr>
+                                  <% }); %>
+                                <% }); %>
+                              </tbody>
+                              
+                        </table>
+                        <div class="pagination">
+                            <% if(page > 1) { %>
+                                <a href="/yourOrder?page=<%= page - 1 %>&limit=10" class="btn btn-primary">&laquo; Previous</a>
+                            <% } %>
+                            
+                            <% for(let i = 1; i <= totalPages; i++) { %>
+                                <a href="/yourOrder?page=<%= i %>&limit=10" class="btn btn-light <%= i === page ? 'active' : '' %>"><%= i %></a>
+                            <% } %>
+                        
+                            <% if(page < totalPages) { %>
+                                <a href="/yourOrder?page=<%= page + 1 %>&limit=10" class="btn btn-primary">Next &raquo;</a>
+                            <% } %>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function cancelOrder(orderId, productId) {
+        // Trigger the SweetAlert confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to cancel the order',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'CANCEL'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User confirmed cancellation, proceed with fetch request
+                fetch(`/cancelOrder/${orderId}/${productId}`, { method: 'POST' })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to cancel product from order');
+                        return response.json();
+                    })
+                    .then(data => {
+                        Swal.fire( // Use SweetAlert for success message too
+                            'Cancelled!',
+                            'Product cancelled successfully.',
+                            'success'
+                        );
+                        window.location.reload(); // Reload the page to see changes
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire( // And also for error message
+                            'Error!',
+                            'Error cancelling product from order.',
+                            'error'
+                        );
+                    });
+            }
+        });
+    }
+    
+        function returnOrder(orderId, productId) {
+          if (!confirm('Are you sure you want to return this product from the order?')) return;
+    
+          fetch(`/returnOrder/${orderId}/${productId}`, { method: 'POST' })
+            .then(response => {
+              if (!response.ok) throw new Error('Failed to return product from order');
+              return response.json();
+            })
+            .then(data => {
+              alert('Product returned successfully');
+              // Here you can also update the UI to reflect the returned status of the specific product
+              window.location.reload(); // Reload the page to see changes
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Error returning product from order');
+            });
+        }
+    </script>
+    
+    <script>
+        function confirmCancel() {
+            return confirm('Are you sure you want to cancel this order?');
+        }
+    
+        function confirmReturn() {
+            return confirm('Are you sure you want to return this order?');
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('myButton').onclick = function() {
+        Swal.fire({
+            title: 'Hello World!',
+            text: 'This is a Sweet Alert.',
+            icon: 'success',
+            confirmButtonText: 'Cool'
+        });
+    };
+</script>
+    <!-- Additional JavaScript here -->
+</body>
+</html>
+
+
+<%-include('footer')-%>

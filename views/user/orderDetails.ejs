@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .order-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .order-header h2 {
+            margin: 0;
+            color: #007bff;
+        }
+        .product-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .product-details div {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+        }
+        .product-description {
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .total-price {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .highlight {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+
+        <form id="filter-form" action="/downloadInvoice/<%=order._id%>" method="get">
+            <!-- Excel Report Button -->
+            <button type="submit" class="btn btn-primary" name="action" value="excel" style="margin-left: 602px;">Download Invoice</button>
+          </form>
+
+
+
+        <div class="order-header">
+            <h2>Order Details</h2>
+            <!-- <p>Order ID: #78910</p> -->
+            <p><%= new Date(order.orderDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></p>
+        </div>
+        <div class="product-details">
+            <div><strong>Product Name</strong><br><%=productDetail.productName%></div>
+            <div><strong>Quantity</strong><br><%=productDetail.quantity%></div>
+            <div><strong>Price</strong><br><%=productDetail.price%></div>
+            <div><strong>Discount Price</strong><br><span class="highlight"><%= productDetail.price * productDetail.quantity - productDetail.discountPrice%></span></div>
+        </div>
+        <div class="product-description">
+            <strong>Description:</strong>
+            <p><%=product.description%></p>
+        </div>
+        <div class="total-price">
+            Total: <span class="highlight">$<%=productDetail.price * productDetail.quantity - productDetail.discountPrice%></span>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</html>

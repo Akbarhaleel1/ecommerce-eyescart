@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coupon Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <style>
+            body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0042db;
+      padding-top: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar a {
+      padding: 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
+    }
+
+    .sidebar a:hover {
+      background-color: #002080;
+    }
+
+    .sidebar a.active {
+      background-color: #002080;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .logout {
+      margin-top: 20px;
+    }
+
+    /* New styles for the main content */
+    .statistics-container {
+      background-color: #fff;
+      margin-top: 29px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* You can add more specific styles for your content as needed */
+    .statistics-container h1 {
+      color: #333;
+    }
+
+    </style>
+</head>
+<body>
+       
+    <header>
+        Admin Dashboard
+      </header>
+      
+      <div class="sidebar">
+        <div class="sidebar-heading"></div>
+        <a href="adminDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="adminOrder"><i class="fas fa-shopping-cart"></i> Orders</a>
+        <a href="adminStatistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+        <a href="adminProducts"><i class="fas fa-box"></i> Products</a>
+        <a href="adminCategory"><i class="fas fa-box"></i> Category</a>
+        <a href="adminUsers"><i class="fas fa-users"></i> Users</a>
+        <a href="adminOffers"><i class="fas fa-percent"></i> Offers</a>
+        <a href="adminCoupons"  class="active"><i class="fas fa-ticket-alt"></i> Coupons</a>
+        <!-- <a href="adminBanner"><i class="fas fa-scroll"></i> Banner</a> -->
+        <a href="/adminLogOut" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    <div class="container mt-5" style="margin-right: 56px;position: relative;top: -14px;">
+        <h2>Coupon Management</h2>
+        <!-- Add Coupon Form -->
+        <div class="card">
+            <div class="card-header">
+                Add New Coupon
+            </div>
+            <div class="card-body">
+                <!-- <form action="/addCoupon" method="post">
+                    <div class="form-group">
+                        <label for="couponCode">Coupon Code</label>
+                        <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" name="couponCode">
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">Discount (%)</label>
+                        <input type="number" class="form-control" id="discount" placeholder="Discount percentage" name="discount">
+                    </div>
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="date" class="form-control" id="expiryDate" name="expiryDate">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="purchaseAmount">Purchase Amount</label>
+                      <input type="text" class="form-control" id="purchaseAmount" placeholder="Enter Purchase Amount" name="purcheseAmount">
+                  </div>                  
+                    <button type="submit" class="btn btn-primary">Add Coupon</button>
+                </form> -->
+
+                <form action="/addCoupon" method="post" id="couponForm">
+                  <div class="form-group">
+                      <label for="couponCode">Coupon Code</label>
+                      <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" name="couponCode">
+                      <small class="form-text text-danger" id="couponCodeError"></small>
+                  </div>
+                  <div class="form-group">
+                      <label for="discount">Discount (%)</label>
+                      <input type="number" class="form-control" id="discount" placeholder="Discount percentage" name="discount">
+                      <small class="form-text text-danger" id="discountError"></small>
+                  </div>
+                  <div class="form-group">
+                      <label for="expiryDate">Expiry Date</label>
+                      <input type="date" class="form-control" id="expiryDate" name="expiryDate">
+                      <small class="form-text text-danger" id="expiryDateError"></small>
+                  </div>
+                  <div class="form-group">
+                      <label for="purchaseAmount">Purchase Amount</label>
+                      <input type="text" class="form-control" id="purchaseAmount" placeholder="Enter Purchase Amount" name="purcheseAmount">
+                      <small class="form-text text-danger" id="purchaseAmountError"></small>
+                  </div>                  
+                  <button type="submit" class="btn btn-primary">Add Coupon</button>
+              </form>
+              
+            </div>
+        </div>
+
+        <!-- Coupon Table -->
+        <div class="card mt-4">
+            <div class="card-header">
+                Existing Coupons
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Coupon Code</th>
+                            <th scope="col">Discount</th>
+                            <th scope="col">Expiry Date</th>
+                            <th scope="col">Purchese Amount</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%coupons.forEach((element)=>{%>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td><%=element.couponCode%></td>
+                            <td><%=element.discount%></td>
+                            <td><%= new Date(element.expireDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></td>
+                            <td><%=element.purcheseAmount%></td>
+                            <td>
+                                <!-- <button class="btn btn-primary btn-sm">Edit</button> -->
+                            <button class="btn btn-primary btn-sm" onclick="editCoupon('<%= element._id %>', '<%= element.couponCode %>', '<%= element.discount %>', '<%= element.expireDate %>', '<%= element.purcheseAmount %>')">Edit</button>
+                                <a href="/deleteCoupons/<%=element._id%>"><button class="btn btn-danger btn-sm">Delete</button></a>
+                                <!-- <button class="btn btn-danger btn-sm">Delete</button> -->
+                            </td>
+                        </tr>
+                        <%})%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Coupon Modal -->
+<div class="modal fade" id="editCouponModal" tabindex="-1" aria-labelledby="editCouponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editCouponModalLabel">Edit Coupon</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editCouponForm" action="/updateCoupon" method="post">
+          <div class="modal-body">
+              <input type="hidden" id="editCouponId" name="couponId">
+              <div class="mb-3">
+                  <label for="editCouponCode" class="form-label">Coupon Code</label>
+                  <input type="text" class="form-control" id="editCouponCode" name="couponCode">
+              </div>
+              <div class="mb-3">
+                  <label for="editDiscount" class="form-label">Discount (%)</label>
+                  <input type="number" class="form-control" id="editDiscount" name="discount">
+              </div>
+              <div class="mb-3">
+                  <label for="editExpiryDate" class="form-label">Expiry Date</label>
+                  <input type="date" class="form-control" id="editExpiryDate" name="expiryDate" >
+              </div>
+              <div class="mb-3">
+                  <label for="editPurcheseAmount" class="form-label">Purchase Amount</label>
+                  <input type="text" class="form-control" id="editPurcheseAmount" name="purcheseAmount" >
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">Close</button> -->
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  
+
+    
+  <script>
+    
+  </script>
+
+
+  <script>
+    function editCoupon(id, couponCode, discount, expireDate, purcheseAmount) {
+        document.getElementById('editCouponId').value = id;
+        document.getElementById('editCouponCode').value = couponCode;
+        document.getElementById('editDiscount').value = discount;
+        // document.getElementById('editExpiryDate').value = expireDate;
+        document.getElementById('editPurcheseAmount').value = purcheseAmount;
+    
+
+        var formattedExpireDate = new Date(expireDate).toISOString().split('T')[0];
+    document.getElementById('editExpiryDate').value = formattedExpireDate;
+        // Update the form action if needed
+        // document.getElementById('editCouponForm').action = `/updateCoupon/${id}`;
+    
+        var editModal = new bootstrap.Modal(document.getElementById('editCouponModal'), {});
+        editModal.show();
+    }
+    </script>
+
+<script>
+  document.getElementById('couponForm').addEventListener('submit', function(event) {
+      let hasError = false;
+  
+      const couponCode = document.getElementById('couponCode').value;
+      if (!couponCode) {
+          document.getElementById('couponCodeError').innerText = 'Coupon code is required.';
+          hasError = true;
+      } else {
+          document.getElementById('couponCodeError').innerText = '';
+      }
+  
+      const discount = document.getElementById('discount').value;
+      if (!discount) {
+          document.getElementById('discountError').innerText = 'Discount percentage is required.';
+          hasError = true;
+      } else {
+          document.getElementById('discountError').innerText = '';
+      }
+  
+      const expiryDate = document.getElementById('expiryDate').value;
+      if (!expiryDate) {
+          document.getElementById('expiryDateError').innerText = 'Expiry date is required.';
+          hasError = true;
+      } else {
+          document.getElementById('expiryDateError').innerText = '';
+      }
+  
+      const purchaseAmount = document.getElementById('purchaseAmount').value;
+      if (!purchaseAmount) {
+          document.getElementById('purchaseAmountError').innerText = 'Purchase amount is required.';
+          hasError = true;
+      } else {
+          document.getElementById('purchaseAmountError').innerText = '';
+      }
+  
+      if (hasError) {
+          event.preventDefault(); // Prevent form submission if there are errors
+      }
+  });
+  </script>
+  
+  
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<%-include('header')-%>
+  
+
+
+<style>
+  /* Pagination Controls Styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination a {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border-radius: 5px;
+  border: 1px solid #c800ff;
+  color: #c800ff;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a.active, .pagination a:hover {
+  background-color: #000000;
+  color: white;
+}
+
+.pagination a:hover {
+  background-color: #000000;
+  border-color: #0f101100;
+}
+
+/* Optional: Adding cursor pointer to the links */
+.pagination a {
+  cursor: pointer;
+}
+
+</style>
+  <!-- product section -->
+
+  <section class="product_section ">
+    <div class="container">
+      <div class="product_heading">
+        <h2>
+          Top Sale Watches
+        </h2>
+      </div>
+      <div class="product_container">
+        <% products.forEach((product, index) => { %>
+            <div class="box">
+                <div class="box-content">
+                    <div class="img-box">
+                        <% if (product.imageUrl && product.imageUrl.length > 0) { %>
+                            <a href="./product_detail/<%= product._id %>">
+                                <img src="<%= product.imageUrl[0] %>" alt="<%- product.productname %>">
+                            </a>
+                        <% } else { %>
+                            <p>No Image Available</p>
+                        <% } %>
+                    </div>
+                    <div class="detail-box">
+                        <div class="text">
+                            <h6><%= product.productname %></h6>
+                            <h5><span>$</span> <%= product.price %></h5>
+                        </div>
+                        <div class="like">
+                            <h6>Like</h6>
+                            <div class="star_container">
+                                <% for (let i = 0; i < 5; i++) { %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-box">
+                    <a href="/product_detail/<%= product._id %>">Buy Now  </a>
+                    <a href="/addCart/<%= product._id %>"style="margin-left: 24px;">Add To Cart</a>
+                </div>
+
+            </div>
+        <% }); %>
+    </div>
+    
+
+    <!-- Pagination Controls -->
+<div class="pagination">
+  <% if(currentPage > 1) { %>
+    <a href="/product?page=<%= currentPage - 1 %>">Previous</a>
+  <% } %>
+  <% for(let i = 1; i <= totalPages; i++) { %>
+    <a href="/product?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+  <% } %>
+  <% if(currentPage < totalPages) { %>
+    <a href="/product?page=<%= currentPage + 1 %>">Next</a>
+  <% } %>
+</div>
+
+    
+  <!-- end product section -->
+
+
+  
+
+
+  <!-- end product section -->
+
+
+  <!-- end product section -->
+
+  <!-- info section -->
+  <section class="info_section layout_padding2">
+    <div class="container">
+      <div class="info_logo">
+        <h2>
+          HandTime
+        </h2>
+      </div>
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="info_contact">
+            <h5>
+              About Shop
+            </h5>
+            <div>
+              <div class="img-box">
+                <img src="images/location-white.png" width="18px" alt="">
+              </div>
+              <p>
+                Address
+              </p>
+            </div>
+            <div>
+              <div class="img-box">
+                <img src="images/telephone-white.png" width="10px" alt="">
+              </div>
+              <p>
+                +01 1234567890
+              </p>
+            </div>
+            <div>
+              <div class="img-box">
+                <img src="images/envelope-white.png" width="18px" alt="">
+              </div>
+              <p>
+                demo@gmail.com
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info_info">
+            <h5>
+              Informations
+            </h5>
+            <p>
+              ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="info_insta">
+            <h5>
+              Instagram
+            </h5>
+            <div class="insta_container">
+              <div class="row m-0">
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w1.png" alt="">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w2.png" alt="">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w3.png" alt="">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w4.png" alt="">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w5.png" alt="">
+                    </div>
+                  </a>
+                </div>
+                <div class="col-4 px-0">
+                  <a href="">
+                    <div class="insta-box b-1">
+                      <img src="images/w6.png" alt="">
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="info_form ">
+            <h5>
+              Newsletter
+            </h5>
+            <form action="">
+              <input type="email" placeholder="Enter your email">
+              <button>
+                Subscribe
+              </button>
+            </form>
+            <div class="social_box">
+              <a href="">
+                <img src="images/fb.png" alt="">
+              </a>
+              <a href="">
+                <img src="images/twitter.png" alt="">
+              </a>
+              <a href="">
+                <img src="images/linkedin.png" alt="">
+              </a>
+              <a href="">
+                <img src="images/youtube.png" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info_section -->

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0042db;
+      padding-top: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar a {
+      padding: 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
+    }
+
+    .sidebar a:hover {
+      background-color: #002080;
+    }
+
+    .sidebar a.active {
+      background-color: #002080;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .logout {
+      margin-top: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      margin-top: 29px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 30px;
+      background-color: #7b7be4;
+      color: #fff;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #5a5ac5;
+    }
+
+    #table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #table th, #table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .edit-btn {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .edit-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Admin Order
+</header>
+<div class="sidebar">
+  <div class="sidebar-heading"></div>
+  <a href="adminDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+  <a href="adminOrder" class="active"><i class="fas fa-shopping-cart"></i> Orders</a>
+  <a href="adminStatistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+  <a href="adminProducts"><i class="fas fa-box"></i> Products</a>
+  <a href="adminCategory"><i class="fas fa-box"></i> Category</a>
+  <a href="adminUsers"><i class="fas fa-users"></i> Users</a>
+  <a href="adminOffers"><i class="fas fa-percent"></i> Offers</a>
+  <a href="adminCoupons"><i class="fas fa-ticket-alt"></i> Coupons</a>
+  <!-- <a href="adminBanner"><i class="fas fa-scroll"></i> Banner</a> -->
+  <a href="/adminLogOut" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<div class="main-content">
+  <div class="container">
+    <table id="table" class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Address</th>
+          <th>Quantity</th>
+          <th>Payment Method</th>
+          <th>Total Price</th>
+          <th>Products</th>
+          <th>Status</th>
+          <th>Status Action</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% order.forEach((order, index) => { %> 
+          <% order.products.forEach((product, productIndex) => { %> 
+            <tr>
+              <td><%= ((page - 1) * limit) + index + 1 %></td>
+              <td><%= order.address.firstName %> <%= order.address.lastName %></td>
+              <td><%= order.address.address %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.zip %></td>
+              <td><%= product.quantity %></td>
+              <td><%= order.paymentMethod %></td>
+              <td><%= product.price * product.quantity - product.discountPrice%></td>
+              <td><%= product.productName %></td>
+              <td><p id="statusID<%= product.productid %>"><%= product.status %></p></td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton<%= product.productid %>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%= product.status %>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton<%= product.productid %>">
+                    <%if(product.status!="Delivered" && product.status!="Cancelled") {%> 
+                    <a class="dropdown-item" href="#" data-value="Pending" data-order-id="<%= order._id %>" data-product-id="<%= product.productid %>">Pending</a>
+                    <a class="dropdown-item" href="#" data-value="Processing" data-order-id="<%= order._id %>" data-product-id="<%= product.productid %>">Processing</a>
+                    <a class="dropdown-item" href="#" data-value="Shipped" data-order-id="<%= order._id %>" data-product-id="<%= product.productid %>">Shipped</a>
+                      <a class="dropdown-item" href="#" data-value="Delivered" data-order-id="<%= order._id %>" data-product-id="<%= product.productid %>">Delivered</a>
+                      <a class="dropdown-item" href="#" data-value="Cancelled" data-order-id="<%= order._id %>" data-product-id="<%= product.productid %>">Cancelled</a>
+                    <%}else{%> 
+                      <%if(product.status=="Cancelled") {%> 
+                     <p style="color: red; padding: 10px;">Order is Cancelled You can't change Status</p>
+                     <%}else{%> 
+                      <p style="color: rgb(0, 122, 18); padding: 10px;" >Order is Delivered , you can't change Status</p><%}%>
+                    <%}%>
+                    
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% }); %>
+      </tbody>
+      
+    </table>
+    <!-- Place this code below your table in the EJS file -->
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <% for(let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item <%= i === page ? 'active' : '' %>">
+        <a class="page-link" href="?page=<%= i %>&limit=10"><%= i %></a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
+
+  </div>
+</div>
+<!-- 
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', function(event) {
+      event.preventDefault();
+      const status = this.getAttribute('data-value');
+      const orderId = this.getAttribute('data-order-id');
+
+      fetch('/update-status', {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, productId, orderId })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update the UI only after the server confirms the update
+        document.getElementById('dropdownMenuButton' + orderId).textContent = data.status;
+        document.getElementById('statusID' + orderId).textContent = data.status;
+
+        console.log("Status updated successfully to", data.status);
+      })
+      .catch(error => console.error("Error:", error));
+    });
+  });
+});
+
+  </script> -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownItems = document.querySelectorAll('.dropdown-item');
+    
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', function(event) {
+          event.preventDefault();
+          const status = this.getAttribute('data-value');
+          // Assuming the productId is stored in a data attribute like data-product-id on the same element
+          const productId = this.getAttribute('data-product-id');
+          const orderId = this.getAttribute('data-order-id');
+    
+          fetch('/update-status', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status, productId, orderId }) // Now includes productId correctly
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            // Assuming you want to update the UI to reflect the new status
+            // You might need to adjust selectors depending on how your HTML is structured
+            document.getElementById('statusID' + productId).textContent = data.status; // Assuming you have such an ID
+            document.getElementById('dropdownMenuButton' + productId).textContent = data.status;
+            console.log("Status updated successfully to", data.status);
+          })
+          .catch(error => console.error("Error:", error));
+        });
+      });
+    });
+    </script>
+    
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

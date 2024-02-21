@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link  href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .main-content {
+      margin: 0 auto; /* Center the content */
+      width: 60%; /* Adjust the width as needed */
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #form-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #form-table th, #form-table td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+    }
+
+    .form-input {
+      width: calc(100% - 10px);
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .error-message {
+      color: #ff0000;
+      display: none;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+      padding: 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      border: none;
+      width: 48%; /* Adjust the width as needed */
+    }
+
+    .submit-btn {
+      background-color: #0042db;
+      color: #fff;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #002080;
+    }
+
+    .cancel-btn {
+      background-color: #ddd;
+      color: #000000;
+      text-decoration: none; /* Added to remove the underline */
+      display: inline-block; /* Added to make it inline with the button */
+      width: 48%; /* Adjust the width as needed */
+      text-align: center; /* Center the text */
+    }
+    .success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+
+
+
+.image-container {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .remove-button {
+      display: block;
+      margin-top: 5px;
+      cursor: pointer;
+      color: red;
+      color: aliceblue;
+      width: 16vh;
+    }
+
+
+
+    .save-button {
+      display: block;
+      /* margin:5rem; */
+      width: 16vh;
+
+    }
+
+
+
+  </style>
+</head>
+<body>
+
+  <header>
+    Add Product Form
+  </header>
+  
+  <div class="main-content">
+    <div class="container">
+      <form action="/addProduct" method="POST" id="productForm" onsubmit="validateForm(event)" enctype="multipart/form-data">
+        <table id="form-table">
+          <tr>
+            <th>Product Name</th>
+            <td>
+              <input id="productname" type="text" name="productname" class="form-input">
+              <span class="error-message" id="error-productname"></span>
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>
+              <textarea name="description" rows="4" class="form-input"></textarea>
+              <span class="error-message" id="error-description"></span>
+            </td>
+          </tr>
+    
+          <tr>
+            <th>Brand</th>
+            <td>
+              <input type="text" name="brand" class="form-input">
+              <span class="error-message" id="error-brand"></span>
+            </td>
+          </tr>
+          <tr>
+            <th>Price</th>
+            <td>
+              <input type="number" name="price" class="form-input">
+              <span class="error-message" id="error-price"></span>
+            </td>
+          </tr>
+          <tr>
+            <th>Image</th>
+            <td>
+              <input type="file" id="imageInput" accept="image/*" name="image" class="form-input" multiple>
+              <span class="error-message" id="error-image"></span>
+              <div class="container d-flex">
+                <div id="image-container" class="mt-5 ms-5 mb-5"></div>
+                <div id="cropper-container" class="mt-3 mb-5"></div>
+              </div>
+              <!-- <button id="cropButton" type="button">Crop</button> -->
+              
+            </td>
+          </tr>
+         
+          <div id="messageContainer"></div>
+          <tr>
+            <th>Stock</th>
+            <td>
+              <input type="text" name="stock" class="form-input">
+              <span class="error-message" id="error-availability"></span>
+            </td>
+          </tr>
+        </table>
+    
+
+        <%if(message){%> 
+        
+        <span id="error-message" style="display: inline-block; color: #ff0000; background-color: #fff3f3; border: 1px solid #ffcccc; padding: 10px; margin-top: 10px; border-radius: 5px; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 14px; margin-left: 328px">
+          <%= message %>
+        </span>
+        <%}%>
+
+        <div id="messageContainer"></div>
+        <div class="button-container">
+          <button type="submit" class="submit-btn" >Submit</button>
+          <a href="/adminProducts" class="cancel-btn">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  
+
+  <script>
+    // Wait for the DOM to be loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Set a timeout
+      setTimeout(function() {
+        // Select the error message element by its ID
+        var errorMessage = document.getElementById("error-message");
+        // Hide the error message
+        errorMessage.style.display = 'none';
+      }, 3000); // 5000 milliseconds = 5 seconds
+    });
+    </script>
+
+<script>
+  
+const imageContainer = document.getElementById('image-container');
+let croppers = [];
+let croppedImagesData = []; // Array to store cropped image data
+
+document.getElementById('imageInput').addEventListener('change', (event) => {
+  const files = event.target.files;
+
+  for (const file of files) {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const image = new Image();
+      image.src = event.target.result;
+
+      image.onload = () => {
+        const containerDiv = document.createElement('div');
+        containerDiv.className = 'image-container';
+
+        const imageElement = document.createElement('img');
+        imageElement.src = image.src;
+        containerDiv.appendChild(imageElement);
+
+        // Set a fixed height for the container
+        containerDiv.style.height = '150px';
+
+        // Create a new Cropper for each image without a fixed aspect ratio
+        const cropper = new Cropper(imageElement, {
+          aspectRatio: NaN, // Allow freeform cropping
+          viewMode: 1, // Set the cropping mode (0: freeform, 1: restrict to the aspect ratio)
+        });
+
+        // Create a "Save" button for each image
+        const saveButton = document.createElement('button');
+        saveButton.className = 'btn btn-success save-button';
+        saveButton.textContent = 'Save';
+        saveButton.addEventListener('click', () => {
+          // Get the cropped image data for the specific cropper
+          const croppedCanvas = cropper.getCroppedCanvas();
+          const croppedImageData = croppedCanvas.toDataURL('image/jpeg');
+
+          // Store cropped image data in the array
+          croppedImagesData.push(croppedImageData);
+
+          // Optionally, you can remove the "Save" button after saving
+          containerDiv.removeChild(saveButton);
+        });
+        // Create a "Remove" button for each image
+        const removeButton = document.createElement('button');
+        removeButton.className = 'btn btn-danger remove-button';
+        removeButton.textContent = 'Remove';
+        removeButton.addEventListener('click', () => {
+          // Remove the corresponding image and cropper
+          const index = croppers.indexOf(cropper);
+          if (index !== -1) {
+            croppers.splice(index, 1);
+            croppedImagesData.splice(index, 1);
+          }
+          containerDiv.remove();
+        });
+
+        containerDiv.appendChild(saveButton);
+        containerDiv.appendChild(removeButton);
+
+        imageContainer.appendChild(containerDiv);
+        croppers.push(cropper);
+      };
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+// Handle form submission (for adding product)
+document.querySelector('form').addEventListener('submit', async (event) => {
+  // Add the cropped image data to the form data
+  croppedImagesData.forEach((croppedImageData, index) => {
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = `croppedImages[${index}]`;
+    hiddenInput.value = croppedImageData;
+    document.querySelector('form').appendChild(hiddenInput);
+  });
+
+});
+</script>
+
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+    
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+  
+<!-- <script>
+  var imagePreview = document.getElementById('imagePreview');
+  var cropper;
+
+  document.getElementById('imageInput').addEventListener('change', function (e) {
+    var files = e.target.files;
+    var done = function (url) {
+      imagePreview.src = url;
+      if (cropper) {
+        cropper.destroy();
+      }
+      cropper = new Cropper(imagePreview, {
+        aspectRatio: 16 / 9,
+        crop(event) {
+          console.log(event.detail.x);
+          console.log(event.detail.y);
+          console.log(event.detail.width);
+          console.log(event.detail.height);
+          console.log(event.detail.rotate);
+          console.log(event.detail.scaleX);
+          console.log(event.detail.scaleY);
+        },
+      });
+    };
+
+    if (files && files.length > 0) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        done(reader.result);
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  });
+
+  document.getElementById('cropButton').addEventListener('click', function() {
+  var canvas = cropper.getCroppedCanvas();
+  canvas.toBlob(function(blob) {
+    var formData = new FormData();
+    formData.append('image', blob);
+    // Ensure elements have respective IDs or use the name attribute to select them
+    formData.append('productname', document.querySelector('[name="productname"]').value);
+    formData.append('description', document.querySelector('[name="description"]').value);
+    formData.append('brand', document.querySelector('[name="brand"]').value);
+    formData.append('price', document.querySelector('[name="price"]').value);
+    formData.append('stock', document.querySelector('[name="stock"]').value);
+
+    fetch('/addProduct', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+      displayMessage(data.message, true); // Assuming 'data.message' and 'data.success' are returned from your server
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      displayMessage('An error occurred. Please try again.', false);
+    });
+  });
+});
+
+function displayMessage(message, isSuccess) {
+  var messageContainer = document.getElementById('messageContainer');
+  messageContainer.innerHTML = ''; // Clear previous messages
+  var messageElement = document.createElement('div');
+  if (isSuccess) {
+    messageElement.className = 'success-message'; // Add your success class
+  } else {
+    messageElement.className = 'error-message'; // Add your error class
+  }
+  messageElement.textContent = message;
+  messageContainer.appendChild(messageElement);
+}
+
+</script> -->
+
+  
+  
+  <script>
+    function validateForm(event) {
+      // Reset error messages
+      document.querySelectorAll('.error-message').forEach(function (error) {
+        error.style.display = 'none';
+      });
+  
+      let isValid = true;
+  
+      // Validate Product Name
+      const productName = document.getElementById('productname');
+      const errorProductName = document.getElementById('error-productname');
+      if (productName.value.trim() === '') {
+        errorProductName.style.display = 'block';
+        errorProductName.innerHTML = 'Please enter a valid product name.';
+        isValid = false;
+      }
+  
+      // Validate Description
+      const description = document.querySelector('textarea[name="description"]');
+      const errorDescription = document.getElementById('error-description');
+      if (description.value.trim() === '') {
+        errorDescription.style.display = 'block';
+        errorDescription.innerHTML = 'Please enter a valid description.';
+        isValid = false;
+      }
+  
+      // Validate Brand
+      const brand = document.querySelector('input[name="brand"]');
+      const errorBrand = document.getElementById('error-brand');
+      if (brand.value.trim() === '') {
+        errorBrand.style.display = 'block';
+        errorBrand.innerHTML = 'Please enter a valid brand.';
+        isValid = false;
+      }
+  
+      // Validate Price
+      const price = document.querySelector('input[name="price"]');
+      const errorPrice = document.getElementById('error-price');
+      if (price.value.trim() === '' || price.value < 0) {
+        errorPrice.style.display = 'block';
+        errorPrice.innerHTML = 'Please enter a valid price.';
+        isValid = false;
+      }
+  
+      // Validate Image
+      const image = document.querySelector('input[name="image"]');
+      const errorImage = document.getElementById('error-image');
+      if (image.value.trim() === '' && !image.files.length) {
+        errorImage.style.display = 'block';
+        errorImage.innerHTML = 'Please select a valid image.';
+        isValid = false;
+      }
+  
+      // Validate Stock
+      const stock = document.querySelector('input[name="stock"]');
+      const errorAvailability = document.getElementById('error-availability');
+      if (stock.value.trim() === '' || isNaN(stock.value) || stock.value < 0) {
+        errorAvailability.style.display = 'block';
+        errorAvailability.innerHTML = 'Please enter a valid stock quantity.';
+        isValid = false;
+      }
+  
+      if (!isValid) {
+        event.preventDefault();
+      }
+    }
+  </script> 
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+  <script src="/javascripts/image-preview.js"></script>
+
+</body>
+</html>

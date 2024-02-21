@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+    .main-content {
+      margin: 0 auto;
+      width: 60%;
+      padding: 20px;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    /* Discount Form Specific Styles */
+    form label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    form input[type="text"],
+    form input[type="number"],
+    form input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+    form input[type="checkbox"] {
+      margin-top: 5px;
+      margin-right: 10px;
+    }
+    form input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    form input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  Add Discount Form
+</header>
+
+<!-- <div class="main-content">
+  <div class="container">
+    <form action="/addOffer" method="post">
+
+      <label for="type">Type:</label>
+      <input type="text" id="type" name="type" value="Discount">
+      
+      
+      <label for="discount">Discount (%):</label>
+      <input type="number" id="discount" name="discount" min="0" max="100" >
+      
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" name="startDate">
+      
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date" name="endDate" >
+
+<label for="category">Category:</label>
+<select id="category" name="category" style="width: 100%; padding: 8px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box;">
+<% productsData.forEach((item) => { %>
+  <option value="<%= item.productname %>"><%= item.productname %></option>
+<% }); %>
+</select>
+
+      
+      <label>
+        <input type="checkbox" id="is-active" name="isActive">
+        Is Active
+      </label><br><br>  
+      
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div> -->
+
+
+<div class="main-content">
+  <div class="container">
+    <form id="offerForm" action="/addOffer" method="post">
+      <label for="type">Type:</label>
+      <input type="text" id="type" name="type" value="Discount" >
+      <span class="error-message" style="color: red;" id="type-error"></span>
+      
+      <!-- Discount input with error message span -->
+      <label for="discount">Discount (%):</label>
+      <input type="number" id="discount" name="discount" min="0" max="100" >
+      <span class="error-message" style="color: red;" id="discount-error"></span>
+      
+      <!-- Start Date input with error message span -->
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" name="startDate" >
+      <span class="error-message" style="color: red;" id="start-date-error"></span>
+      
+      <!-- End Date input with error message span -->
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date" name="endDate" >
+      <span class="error-message" style="color: red;" id="end-date-error"></span>
+            <!-- Options go here -->
+      <!-- Category Select Box -->
+      <label for="category">Category:</label>
+      <select id="category" name="category"  style="width: 100%; padding: 8px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box;">
+        <% productsData.forEach((item) => { %>
+          <option value="<%= item.productname %>"><%= item.productname %></option>
+        <% }); %>
+      </select>
+      
+      <!-- Is Active Checkbox -->
+      <label>
+        <input type="checkbox" id="is-active" name="isActive">
+        Is Active
+      </label><br><br>  
+      <span class="error-message" style="color: red;" id="category-error"></span>
+      <!-- Submit Button -->
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('offerForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission to validate first
+    
+    // Flag to track validation status
+    let isValid = true;
+  
+    // Reset error messages
+    document.querySelectorAll('.error-message').forEach(function(el) {
+      el.textContent = '';
+    });
+  
+    // Validate Type
+    var type = document.getElementById('type');
+    if (type.value.trim() === '') {
+      document.getElementById('type-error').textContent = 'Type is required.';
+      isValid = false;
+    }
+  
+    // Validate Discount
+    var discount = document.getElementById('discount');
+    if (discount.value.trim() === '') {
+      document.getElementById('discount-error').textContent = 'Discount is required.';
+      isValid = false;
+    } else if (discount.value < 0 || discount.value > 100) {
+      document.getElementById('discount-error').textContent = 'Discount must be between 0 and 100.';
+      isValid = false;
+    }
+  
+    // Validate Start Date
+    var startDate = document.getElementById('start-date');
+    if (startDate.value.trim() === '') {
+      document.getElementById('start-date-error').textContent = 'Start Date is required.';
+      isValid = false;
+    }
+  
+    // Validate End Date
+    var endDate = document.getElementById('end-date');
+    if (endDate.value.trim() === '') {
+      document.getElementById('end-date-error').textContent = 'End Date is required.';
+      isValid = false;
+    } else if (new Date(startDate.value) >= new Date(endDate.value)) {
+      document.getElementById('end-date-error').textContent = 'End Date must be after Start Date.';
+      isValid = false;
+    }
+  
+    // Validate Category
+    var category = document.getElementById('category');
+    if (category.value.trim() === '') {
+      document.getElementById('category-error').textContent = 'Category is required.';
+      isValid = false;
+    }
+  
+    // If all validations passed, submit the form
+    if (isValid) {
+      event.currentTarget.submit();
+    }
+  });
+  </script>
+  
+  
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
