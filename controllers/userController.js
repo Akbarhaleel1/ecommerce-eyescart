@@ -89,6 +89,9 @@ exports.getlogin = (req, res) => {
     res.render('login', { errorMessage: "" });
   }
 }
+exports.root = (req, res) => {
+    res.redirect('/index')
+}
 
 
 
