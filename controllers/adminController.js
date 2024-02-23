@@ -1,5 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcryptjs");
 const Category = require("../model/categorySchema");
 const Product = require("../model/productSchema");
 const collection = require("../model/userSchema")
