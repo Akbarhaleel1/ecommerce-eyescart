@@ -100,15 +100,17 @@ exports.postlogin = async (req, res) => {
   try {
 
     const data = {
-      username: req.body.username,
+      email: req.body.email,
       password: req.body.password
     };
 
-    if (!data.username || !data.password) {
+    if (!data.email || !data.password) {
       res.render("login", { message: "Username and password are required." });
     } else {
 
-      const user = await userCollection.findOne({ username: data.username });
+      const user = await userCollection.findOne({ email: data.email });
+
+      console.log("user is email",user.email);
 
       if (!user) {
         console.log("Account doesn't exist");
@@ -130,7 +132,7 @@ exports.postlogin = async (req, res) => {
             username: user.username
           }
 
-          const userData = await userCollection.findOne({ username: data.username });
+          const userData = await userCollection.findOne({ username: user.username });
 
           const userdata = {
             userId: req.session.user.userId,
