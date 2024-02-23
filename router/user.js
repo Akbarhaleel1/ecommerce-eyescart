@@ -33,10 +33,10 @@ const checkSessionAndBlock = async (req, res, next) => {
 
 
 //getController
-const { getlogin, getsignup, index, about, contact, product, testimonial, account, wishlist, cart, getOtp, resendotp, getProduct_detail, logout, profile, getAddAddress, getOrder, getEditProfile, getplaceOrder, getpayment, getOrderConfirm, getCartItemRemove, getyourOrder, getChangepassword, getEditAddress, addCart, getOrderDetails, downloadInvoice, applyCoupon, getWallet, getDeposite, getWithdraw } = require('../controllers/userController')
+const { getlogin, getsignup, index, about, contact, product, testimonial, account, wishlist, cart, getOtp, resendotp, getProduct_detail, logout, profile, getAddAddress, getOrder, getEditProfile, getplaceOrder, getpayment, getOrderConfirm, getCartItemRemove, getyourOrder, getChangepassword, getEditAddress, addCart, getOrderDetails, downloadInvoice, applyCoupon, getWallet, getDeposite, getWithdraw ,addWishlist,wishlistItemRemove,forgotPassword,getForgotOtp} = require('../controllers/userController')
 
 //postController
-const { postlogin, postsignup, postOtp, postEditProfile, postAddAddress, postCart, postChangepassword, updateQuantity, postEditAddress, getRazorpayOrder, postOrderConfirm, postCancelOrder, postReturnOrder, postDeposit, postWalletWithdraw } = require("../controllers/userController")
+const { postlogin, postsignup, postOtp, postEditProfile, postAddAddress, postCart, postChangepassword, updateQuantity, postEditAddress, getRazorpayOrder, postOrderConfirm, postCancelOrder, postReturnOrder, postDeposit, postWalletWithdraw,getDepositepost,getdepoamount,postforgotPassword,postforgotPass ,postForgotOtp} = require("../controllers/userController")
 
 // const usercheck = (req, res, next) => {
 
@@ -93,6 +93,8 @@ router.post('/update-quantity', updateQuantity);
 
 router.get("/cartItemRemove/:deleteId", checkSessionAndBlock, getCartItemRemove)
 
+router.get("/wishlistItemRemove/:deleteId", checkSessionAndBlock, wishlistItemRemove)
+
 router.get('/order', checkSessionAndBlock, getOrder)
 
 router.get('/placeOrder/:productId', checkSessionAndBlock, getplaceOrder)
@@ -107,6 +109,15 @@ router.get("/yourOrder", checkSessionAndBlock, getyourOrder)
 
 router.get('/changePassword', checkSessionAndBlock, getChangepassword)
 
+router.get("/forgotPassword",forgotPassword)
+
+router.post('/forgotPassword',postforgotPassword)
+
+router.post("/forgotPass",postforgotPass)
+
+router.get("/forgotOtp",getForgotOtp)
+
+router.post("/forgotOtp",postForgotOtp)
 
 router.post('/changePassword', postChangepassword);
 
@@ -115,7 +126,8 @@ router.post('/changePassword', postChangepassword);
 // router.get('/returnOrder/:orderId',getReturnOrder)
 
 router.post('/create/:orderId', getRazorpayOrder);
-
+router.post('/create/deposit', getDepositepost);
+router.post('/getdeposit',getdepoamount)
 
 
 // router.get("/orderDetails/:orderId",checkSessionAndBlock ,getOrderDetails)
@@ -187,7 +199,7 @@ router.get("/account", checkSessionAndBlock, account)
 
 router.get("/wishlist", checkSessionAndBlock, wishlist)
 
-
+router.get("/addWishlist/:productid",addWishlist)
 
 
 

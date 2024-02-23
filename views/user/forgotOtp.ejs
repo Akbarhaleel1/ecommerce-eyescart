@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive OTP Verification Form Using Bootstrap 5</title>
+    <!-- Bootstrap 5 CDN Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body> 
+    <section class="wrapper">
+        <div class="container">
+            <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
+                <div class="logo">
+                    <img decoding="async" src="images/logo.png" class="img-fluid" alt="logo">
+                </div>
+                <form class="rounded bg-white shadow p-5" action="/forgotOtp" method="post">
+                    <h3 class="text-dark fw-bolder fs-4 mb-2">Two Step Verification</h3>
+                    <div class="fw-normal text-muted mb-4">
+                        Enter the verification code we sent to
+                    </div>  
+                    <div class="d-flex align-items-center justify-content-center fw-bold mb-4">
+                        <!-- Single input field to automatically handle OTP -->
+                        <input type="text" name="digits" class="form-control" placeholder="Enter OTP" id="autoOtpInput" >
+                    </div>  
+                    <!-- ... Your existing HTML code ... -->
+                    <button type="submit" class="btn btn-primary submit_btn my-4" name="otp">Submit</button>
+
+  
+                    <div class="text-center">
+                        <p id="timer"></p>
+                        <a id="resendBtn" class="btn  btn-primary mb-3 disabled" href="/resendotp" onclick="resendOTP()" style="color: white;">Resend OTP</a>
+                    </div>
+                   
+                    <!-- ... Rest of your HTML code ... -->
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const autoOtpInput = document.getElementById('autoOtpInput');
+            
+            // Add event listener to handle input and automatically move to the next field
+            autoOtpInput.addEventListener('input', function (event) {
+                const inputLength = autoOtpInput.value.length;
+
+                if (inputLength < 6) {
+                    autoOtpInput.value = autoOtpInput.value.replace(/\D/g, '');
+                    const nextInput = document.getElementById(`autoOtpInput_${inputLength + 1}`);
+                    
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
+                } else {
+                    autoOtpInput.blur(); // Move focus away after entering all digits
+                }
+            });
+        });
+    </script>
+    <script>
+        let timer;
+        let timeLeft = 60; // Time in seconds
+      
+        function startTimer() {
+            timer = setInterval(function () {
+                document.getElementById('timer').innerHTML = 'Time left: ' + timeLeft + ' seconds';
+                timeLeft--;
+      
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    document.getElementById('timer').innerHTML = '';
+                    document.getElementById('resendBtn').classList.remove('disabled');
+      
+                }
+            }, 1000);
+        }
+      
+        // Start the timer when the page loads
+        startTimer();
+      </script>
+      
+</body>
+</html>

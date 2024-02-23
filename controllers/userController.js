@@ -18,6 +18,7 @@ const PDFDocument = require("pdfkit");
 const Razorpay = require('razorpay');
 const session = require('express-session');
 const couponsCollection = require("../model/couponSchema");
+const wishlistCollections = require("../model/wishlistSchema")
 const flash = require('connect-flash');
 // require('dotenv').config()
 require('dotenv').config();
@@ -813,6 +814,63 @@ exports.getRazorpayOrder = async (req, res) => {
   }
 };
 
+exports.getDepositepost = async (req, res) => {
+  try {
+    console.log('here the depo backend');
+    const { amount } = req.body;
+    var instance = new Razorpay({ key_id: process.env.KEY_ID, key_secret: process.env.KEY_SECRET});
+    var options = {
+      amount: amount * 100, 
+      currency: "INR",
+      receipt: "order_rcptid_11",
+    };
+
+    // Creating the order
+    instance.orders.create(options, function (err, order) {
+      if (err) {
+        // console.error(err);
+        res.status(500).send("Error creating order");
+        return;
+      }
+
+      res.send({ orderId: order.id });
+
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
+exports.getdepoamount = async (req, res) => {
+  try {
+    const userId = req.session.user.userId;
+    const depositAmount = req.body.depositAmount;
+
+
+    amount = parseFloat(depositAmount);
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).send('Invalid amount');
+    }
+
+    const user = await userCollection.findById({ _id: userId });
+    if (!user) return res.status(404).send('User not found');
+    user.balance = user.balance + amount;
+    await user.save()
+
+    // Record transaction
+    const transaction = new Transaction({
+      user: userId,
+      type: 'deposit',
+      amount: amount
+    })
+
+    await transaction.save();
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+}
 
 
 
@@ -830,6 +888,23 @@ try {
   res.status(500).send("Internal Server Error");
 }
 }
+
+
+
+
+exports.wishlistItemRemove = async (req, res) => {
+try {
+  const deleteid = req.params.deleteId
+  console.log("CartItem deleted" + deleteid);
+  const deleteCart = await wishlistCollections.findOneAndDelete({ productid: deleteid });
+
+  res.redirect('/wishlist')
+} catch (error) {
+  console.error(error);
+  res.status(500).send("Internal Server Error");
+}
+}
+
 
 
 
@@ -915,9 +990,16 @@ exports.postCancelOrder = async (req, res) => {
           const userWallet = await userCollection.findById(userId)
           userWallet.balance += order.products[productIndex].price;
           await userWallet.save()
-          console.log("jeeeee", userWallet.balance);
-          console.log("ffff", userWallet);
+       
 
+          const user = await userCollection.findById({ _id: userId })
+          const transaction = new Transaction({
+            user: user._id,
+            type: 'refunded',
+            amount: order.products[productIndex].price
+          })
+          
+      await transaction.save()
 
           console.log("Specific product cancelled and stock updated successfully");
           res.json({ message: 'Specific product cancelled successfully' });
@@ -1485,7 +1567,7 @@ exports.getWithdraw = async (req, res) => {
 try {
   const userId = req.session.user.userId;
   const user = await userCollection.findById({ _id: userId })
-  res.render("walletWithdraw", { balence: user.balance })
+  res.render("walletWithdraw", { balence: user.balance });
 } catch (error) {
   res.status(500).send('Internal Server Error');
 }
@@ -1558,7 +1640,137 @@ exports.account = (req, res) => {
   res.render("account")
 }
 
-exports.wishlist = (req, res) => {
-  res.render('wishlist')
+exports.wishlist = async (req, res) => {
+try {
+  const userId = req.session.user.userId
+  const wishlist = await wishlistCollections.find({userid:userId});
+
+  res.render('wishlist',{ wishlist: wishlist })
+} catch (error) {
+  res.status(500).send('Internal Server Error');
+
+}
 }
 
+
+exports.addWishlist = async(req,res)=>{
+ try {
+  const productid = req.params.productid;
+ 
+  const userId = req.session.user.userId;
+  const wishlist = await wishlistCollections.findOne({userid:userId, productid:productid});
+  const product = await Product.findById({_id:productid})
+  if(wishlist){
+    return res.status(409).send({ message: 'Product is already in the wishlist' });
+  }
+  
+  if(!wishlist){
+    await wishlistCollections.create({
+      userid:userId,
+      productid:productid,
+      product:product.productname,
+      price:product.price,
+      brand:product.brand,
+      image:product.imageUrl[0]
+    })
+
+  }
+  return res.status(200).send({ message: 'Product added to wishlist successfully' });
+ } catch (error) {
+  res.status(500).send('Internal Server Error');
+ }
+}
+
+
+
+exports.forgotPassword = (req,res)=>{
+  res.render("forgotPassword")
+}
+
+
+
+exports.postforgotPassword = async (req,res)=>{
+  const {email} = req.body
+  const user = await userCollection.findOne({email:email});
+  if(!user){
+    return res.render("login",{message:"User is not exists"})
+  }
+  req.session.userEmail = user.email;
+
+
+  res.redirect("/forgotPassword")
+}
+
+
+
+
+
+exports.postforgotPass= (req,res) =>{
+  const {newPassword,confirmPassword}=req.body;
+  console.log("newpassword is ",newPassword);
+  console.log("confirm password is ",confirmPassword);
+
+  const data = {
+    pass : newPassword,
+    email: req.session.userEmail
+  }
+
+  req.session.userNewPass =data
+
+  console.log("user new pass is ",req.session.userNewPass.pass);
+  
+  const userEmailAddress = req.session.userNewPass.email;
+  req.session.otpToken = generateOTPToken();
+      console.log(req.session.otpToken);
+      otpmail = userEmailAddress
+      // Send OTP via email
+      sendOTPEmail(userEmailAddress, req.session.otpToken);
+
+      res.redirect("/forgotOtp");
+
+}
+
+
+exports.getForgotOtp = (req,res)=>{
+  res.render("forgotOtp")
+}
+
+
+exports.postForgotOtp = async (req,res)=>{
+  try {
+    console.log(req.session.userEmail);
+    const userEmail = req.session.userEmail
+    console.log("user new pass is ",req.session.userNewPass.pass);
+
+    const enteredotp = req.body.digits;
+    console.log("User entered OTP:", enteredotp);
+
+    if (enteredotp === req.session.otpToken) {
+
+      // Hash and salt the password
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(req.session.userNewPass.pass, saltRounds);
+
+      // Replace plain password with hashed password
+      // req.session.userdetails.password = hashedPassword;
+           
+
+      await userCollection.findOneAndUpdate({email:userEmail},{$set:{password:hashedPassword}})
+      
+      // Create a user in the database
+      
+
+      // Redirect to login page upon successful registration
+      res.redirect('/login');
+      console.log("OTP verified successfully!");
+    } else {
+      // Render an error message if OTP is invalid
+      res.render("otp", { message: "Invalid OTP. Please try again." });
+      console.log("Invalid OTP. Please try again.");
+    }
+  } catch (error) {
+    // Log and handle errors appropriately
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}

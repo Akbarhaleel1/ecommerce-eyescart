@@ -1,5 +1,6 @@
 <%-include('header')-%>
-  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
 
 <style>
@@ -36,6 +37,44 @@
 .pagination a {
   cursor: pointer;
 }
+.star_container {
+    text-align: center;
+    padding: 20px;
+}
+
+.add-to-wishlist {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    left: 22px;
+}
+
+.add-to-wishlist i {
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.add-to-wishlist:hover {
+    background: linear-gradient(135deg, #a777e3, #6e8efb);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.add-to-wishlist:active i {
+    transform: scale(1.1);
+}
+  
 
 </style>
   <!-- product section -->
@@ -66,12 +105,14 @@
                             <h5><span>$</span> <%= product.price %></h5>
                         </div>
                         <div class="like">
-                            <h6>Like</h6>
-                            <div class="star_container">
-                                <% for (let i = 0; i < 5; i++) { %>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                <% } %>
-                            </div>
+                            
+                          <div class="star_container" >
+                            <a href="#" class="add-to-wishlist" data-product-id="<%= product._id %>" >
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a>
+                        </div>
+                        
+                          
                         </div>
                     </div>
                 </div>
@@ -247,4 +288,36 @@
     </div>
   </section>
 
+
+  <script>
+    document.querySelectorAll('.add-to-wishlist').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent the default anchor action
+            const productId = this.getAttribute('data-product-id');
+            
+            fetch(`/addWishlist/${productId}`, {
+                method: 'GET', // Adjust if necessary
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({ // Using SweetAlert to show the message
+                    title: 'Notice',
+                    text: data.message,
+                    icon: data.message === 'Product added to wishlist successfully' ? 'success' : 'error',
+                    confirmButtonText: 'OK'
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'An error occurred. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    });
+    </script>
+    
   <!-- end info_section -->
