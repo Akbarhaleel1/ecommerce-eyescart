@@ -25,6 +25,10 @@
                     <div class="d-flex align-items-center justify-content-center fw-bold mb-4">
                         <!-- Single input field to automatically handle OTP -->
                         <input type="text" name="digits" class="form-control" placeholder="Enter OTP" id="autoOtpInput" >
+                        <% if(typeof message !== 'undefined'){ %>
+                            <span id="errorMessage" style="color: red;"><%= message %></span>
+                        <% } %>
+                        
                     </div>  
                     <!-- ... Your existing HTML code ... -->
                     <button type="submit" class="btn btn-primary submit_btn my-4" name="otp">Submit</button>
@@ -40,6 +44,15 @@
             </div>
         </div>
     </section>
+
+    <script>
+        setTimeout(function(){
+            var errorMessageElement= document.getElementById("errorMessage");
+            if(errorMessageElement){
+                errorMessageElement.style.display = "none"
+            }
+        },1000)
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

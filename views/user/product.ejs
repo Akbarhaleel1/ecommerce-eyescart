@@ -107,7 +107,7 @@
                         <div class="like">
                             
                           <div class="star_container" >
-                            <a href="#" class="add-to-wishlist" data-product-id="<%= product._id %>" >
+                            <a href="#" class="add-to-wishlist" data-product-id="<%= product._id %>" style="text-decoration: none;"  >
                                 <i class="fas fa-heart"></i> Wishlist
                             </a>
                         </div>
@@ -117,8 +117,8 @@
                     </div>
                 </div>
                 <div class="btn-box">
-                    <a href="/product_detail/<%= product._id %>">Buy Now  </a>
-                    <a href="/addCart/<%= product._id %>"style="margin-left: 24px;">Add To Cart</a>
+                    <a href="/product_detail/<%= product._id %>" style="text-decoration: none;">Buy Now  </a>
+                    <a href="/addCart/<%= product._id %>"style="margin-left: 24px;" style="text-decoration: none;">Add To Cart</a>
                 </div>
 
             </div>

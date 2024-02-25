@@ -1,33 +1,106 @@
 <%-include('header')-%>
 
-<style>
-    body {
-        padding-top: 50px;
-        background-color: #f8f9fa;
-    }
-    .wishlist-empty-page {
-        text-align: center;
-        padding: 50px 15px;
-    }
-    .icon-heart-broken {
-        font-size: 100px;
-        color: #dc3545;
-    }
-    .wishlist-empty-page h1 {
-        color: #333;
-        margin-top: 25px;
-        margin-bottom: 20px;
-    }
-    .wishlist-empty-page p {
-        color: #666;
-        margin-bottom: 30px;
-    }
-    .browse-products-btn {
-        color: #fff;
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- For FontAwesome Free -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <style>
+        body {
+            padding-top: 50px;
+            background-color: #f8f9fa;
+        }
+
+        .wishlist-empty-page {
+            text-align: center;
+            padding: 50px 15px;
+        }
+
+        .icon-heart-broken {
+            font-size: 100px;
+            color: #dc3545;
+        }
+
+        .wishlist-empty-page h1 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 20px;
+        }
+
+        .wishlist-empty-page p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .browse-products-btn {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        #addTocart {
+            border-radius: 20px;
+            margin-left: 52px;
+            width: 120px;
+
+        }
+
+        #remove {
+            border-radius: 20px;
+            margin-left: 73px;
+            margin-top: 8px;
+        }
+
+        #product {
+            position: absolute;
+            left: 18pc;
+            top: 60px;
+            font-size: 20px;
+        }
+
+
+        @media (max-width: 768px) {
+            #addTocart {
+                border-radius: 20px;
+                margin-left: 175px;
+                margin-top: -174px;
+                width: 147px;
+            }
+
+            #remove {
+                border-radius: 20px;
+                margin-left: 217px;
+                margin-top: -94px;
+            }
+
+            #product {
+                position: absolute;
+                left: 52px;
+                top: 106px;
+                font-size: 20px;
+            }
+
+            #price {
+                font-size: 16px;
+                font-weight: 600;
+                padding: 4px 2px;
+                position: relative;
+                margin-top: 18px;
+                left: 28px;
+                top: 17px;
+            }
+
+            .shopping-cart .cart-item .price {
+                font-size: 16px;
+                font-weight: 600;
+                padding: 4px 2px;
+                position: relative;
+                left: -127px;
+            }
+
+        }
+    </style>
 
     <div class="py-3 py-md-5 bg-light">
         <div class="container">
@@ -36,64 +109,71 @@
                 <div class="col-md-12">
                     <div class="shopping-cart">
 
-                        <% if(wishlist.length > 0) { %>
+                        <% if(wishlist.length> 0) { %>
 
 
-                        <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>Products</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <h4>Price</h4>
-                                </div>
-                                <div class="col-md-2">
-                                    <h4  style="position: absolute;left: 90px;">Remove</h4>
+                            <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Products</h4>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h4>Price</h4>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h4 style="position: absolute;left: 90px;">Remove</h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
+
                             <%wishlist.forEach((product)=>{%>
 
-                            <div class="cart-item">
-                                <div class="row">
-                                    <div class="col-md-6 my-auto">
-                                        <a href="">
-                                            <label class="product-name">
-                                                <img src="<%=product.image%>" style="width: 147px;height: 125px;" alt="">
-                                                <div style="position: absolute;left: 18pc; top: 60px ;font-size: 20px;"><%=product.product%></div>
+                                <div class="cart-item">
+                                    <div class="row">
+                                        <div class="col-md-6 my-auto">
+                                            <a href="">
+                                                <label class="product-name">
+                                                    <img src="<%=product.image%>" style="width: 147px;height: 125px;"
+                                                        alt="">
+                                                    <div id="product">
+                                                        <%=product.product%>
+                                                    </div>
+                                                </label>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-2 my-auto" id="price">
+                                            <label class="price">
+                                                <%=product.price%>
                                             </label>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 my-auto">
-                                        <label class="price"><%=product.price%> </label>
-                                    </div>
-                                
-                                    <div class="col-md-2 col-5 my-auto">
-                                        <div class="remove">
-                                            <a href="/addCart/<%= product.productid %>" class="btn btn-danger btn-sm" style="border-radius: 20px;margin-left: 60px">
-                                                <i class="fa fa-trash"></i> Add To Cart
-                                            </a>
-                                            <a href="wishlistItemRemove/<%= product.productid %>" class="btn btn-danger btn-sm"
-                                                style="border-radius: 20px; margin-left: 72px;">
-                                                <i class="fa fa-trash"></i> Remove
-                                            </a>
+                                        </div>
+
+                                        <div class="col-md-2 col-5 my-auto">
+                                            <div class="remove">
+                                                <a id="addTocart" href="/addCart/<%= product.productid %>"
+                                                    class="btn btn-danger btn-sm " ">
+                                                    <i class=" fas fa-shopping-cart"
+                                                    style="width: 5px; margin-right: 10px; "></i> Add To Cart
+                                                </a>
+                                                <a id="remove" href="wishlistItemRemove/<%= product.productid %>"
+                                                    class="btn btn-danger btn-sm">
+                                                    <i class="fa fa-trash"></i> Remove
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <%})%>
-                            <%}else{%>
-                            
-<div class="container wishlist-empty-page">
-    <i class="fas fa-heart-broken icon-heart-broken"></i>
-    <h1>Your Wishlist is Empty</h1>
-    <p>Looks like you haven't added anything to your wishlist yet.</p>
-    <a href="/product" class="btn browse-products-btn">Browse Products</a>
-</div>
+                                <%})%>
+                                    <%}else{%>
+
+                                        <div class="container wishlist-empty-page">
+                                            <i class="fas fa-heart-broken icon-heart-broken"></i>
+                                            <h1>Your Wishlist is Empty</h1>
+                                            <p>Looks like you haven't added anything to your wishlist yet.</p>
+                                            <a href="/product" class="btn browse-products-btn">Browse Products</a>
+                                        </div>
 
 
-    <%}%>
+                                        <%}%>
 
                     </div>
                 </div>

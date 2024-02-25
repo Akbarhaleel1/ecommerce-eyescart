@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
-   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"> -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"> -->
 
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -46,7 +46,7 @@
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -61,12 +61,13 @@
               <div class="title">
                 EyesCart
               </div>
-              
+
               <img class="logo" src="/images/Logo.png" alt="" style="position: absolute; right: 141px;">
             </span>
           </a>
 
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class=""> </span>
           </button>
 
@@ -88,66 +89,108 @@
                 <a class="nav-link" href="/contact">Contact Us</a>
               </li>
             </ul>
-            <div class="header-items">
-           <a href="/wishlist"><img class="wishlist" src="/images/heart-solid.svg" alt="" ></a> 
-           <a href="/wishlist"><p class="wishlist1">Wishlist</p></a>
-            </div>
-
-            <div class="header-items">
-              <a href="/cart"><img class="cart" src="/images/cart-shopping-solid.svg" alt="" ></a> 
-              <a href="/cart"><p class="cart1">Cart</p></a>
-               </div>
-
-
-            <div class="header-items">
-              <a href="/profile"><img class="account" src="/images/user-solid.svg" alt="" ></a> 
-              <a href="/profile"><p class="account1">Account</p></a>
-               </div>
-               
-               
-               <div class="header-items">
-                 <a href="/login"><img class="logout" src="/images/logout.png" alt="" ></a> 
-                 <a href="/logout" id="log" class="logout1" role="button" style="text-decoration: none;">Logout</a>
-                  </div>
-
-
+           
             <div class="user_optio_box">
             </div>
           </div>
+          <div class="header-container">
+            <div class="header-items">
+              <a href="/wishlist"><img class="wishlist" src="/images/heart-solid.svg" alt=""></a>
+              <a href="/wishlist">
+                <p class="wishlist1">Wishlist</p>
+              </a>
+            </div>
+
+            <div class="header-items">
+              <a href="/cart"><img class="cart" src="/images/cart-shopping-solid.svg" alt=""></a>
+              <a href="/cart">
+                <p class="cart1">Cart</p>
+              </a>
+            </div>
+
+
+            <div class="header-items">
+              <a href="/profile"><img class="account" src="/images/user-solid.svg" alt=""></a>
+              <a href="/profile">
+                <p class="account1">Account</p>
+              </a>
+            </div>
+
+
+            <div class="header-items">
+              <a href="/logout" id="log"><img class="logout log" src="/images/logout.png" alt=""></a>
+              <a href="/logout" id="log1" class="logout1 log" role="button" style="text-decoration: none;">Logout</a>
+            </div>
+          </div>
+
         </nav>
       </div>
     </header>
     <!-- end header section -->
 
 
-      <!-- Include SweetAlert2 CSS and JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("HHH");
-    const logoutButton = document.getElementById("log");
+    <!-- Include SweetAlert2 CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    if (logoutButton) {
-      logoutButton.addEventListener("click", function (e) {
-        e.preventDefault(); // Prevent the default link behavior
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("HHH");
+        const logoutButton = document.getElementById("log");
+        const logoutButton1 = document.getElementById("log1");
 
-        // Use SweetAlert2 for confirmation
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Do you really want to logout?",
-          icon: "question",
-          showCancelButton: true,
-          confirmButtonText: "Yes, logout",
-          cancelButtonText: "No, cancel"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // If the user confirms, redirect to the logout page
-            window.location.href = "/logout";
-          }
-        });
+        if (logoutButton) {
+          logoutButton.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Use SweetAlert2 for confirmation
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Do you really want to logout?",
+              icon: "question",
+              showCancelButton: true,
+              confirmButtonText: "Yes, logout",
+              cancelButtonText: "No, cancel"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // If the user confirms, redirect to the logout page
+                window.location.href = "/logout";
+              }
+            });
+          });
+        }
       });
-    }
-  });
-</script>
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("HHH");
+        // const logoutButton = document.getElementById("log");
+        const logoutButton1 = document.getElementById("log1");
+
+        if (logoutButton1) {
+          logoutButton1.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Use SweetAlert2 for confirmation
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Do you really want to logout?",
+              icon: "question",
+              showCancelButton: true,
+              confirmButtonText: "Yes, logout",
+              cancelButtonText: "No, cancel"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // If the user confirms, redirect to the logout page
+                window.location.href = "/logout";
+              }
+            });
+          });
+        }
+      });
+    </script>

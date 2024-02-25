@@ -76,6 +76,143 @@ a:focus {
           box-shadow: none;
 }
 
+/*header section for mobile size*/
+
+@media (max-width: 600px) {
+/* Base navbar styles */
+
+
+/* Styling for the logout icon */
+.header-items .logout {
+  position: absolute;
+  left:39px; /* Position from the left edge of its parent container */
+  top: 21px; /* Position from the top edge of its parent container */
+}
+.header-items .account {
+  position: absolute;
+  width: 15px;
+  left:13px; /* Position from the left edge of its parent container */
+  top: 22px; /* Position from the top edge of its parent container */
+}
+.header-items .cart {
+  position: absolute;
+  width: 22px;
+  left: -21px; /* Position from the left edge of its parent container */
+  top: 21px; /* Position from the top edge of its parent container */
+}
+.header-items .wishlist {
+  position: absolute;
+  width: 20px;
+  left: -50px; /* Position from the left edge of its parent container */
+  top: 21px; /* Position from the top edge of its parent container */
+}
+
+.logo {
+  width: 50px !important;
+  height: auto !important;
+}
+.navbar-brand .title {
+  position: relative;
+  right: 105px;
+  top:3px ;
+}
+.logout1{
+  display: none;
+}
+.navbar-brand .logo {
+  height: 50px; /* Adjust based on your logo */
+  margin-right: 38px; /* Space between logo and title */
+  margin-bottom: 10px;
+
+}
+.hero_area .navbar-toggler{
+  position: relative;
+  left: 20px;
+  margin-left: 234px;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  margin-left: 20px;
+}
+
+/* Logo and title alignment */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+
+
+.header_section .title {
+  font-size: 14px; /* Smaller size for mobile devices */
+}
+
+/* Icons alignment */
+.header-container {
+  display: flex;
+}
+
+.header-items {
+  display: flex;
+  align-items: center;
+  margin-left: 20px; /* Space between icons */
+}
+
+.header-items img {
+  width: 24px; /* Icon size */
+}
+
+/* Hide text labels for icons by default */
+.header-items p {
+  display: none;
+}
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .navbar-brand, .navbar-brand .logo, .title {
+    font-size: 18px; /* Smaller title for mobile */
+    height: 40px; /* Adjust logo height for mobile */
+  }
+
+  /* Adjustments for mobile view */
+  .header-items img {
+    width: 20px; /* Smaller icons for mobile */
+  }
+
+  /* Styling navbar collapse for mobile */
+  .navbar-collapse {
+    text-align: right;
+  }
+
+  .navbar-nav {
+    text-align: right;
+  }
+
+  .nav-link {
+    padding: 8px 10px; /* Adjust padding for mobile */
+  }
+
+  /* Ensure navbar toggler is visible and styled */
+  .navbar-toggler {
+    border: none;
+    outline: none;
+  }
+
+  .navbar-toggler span {
+    background-color: #333; /* Toggler icon color */
+  }
+
+  /* Additional styling for the toggle icon or button as needed */
+}
+
+
+}
+
+
 /*header section*/
 .hero_area {
   position: relative;

@@ -286,12 +286,13 @@
                                 <div class="form-group form-fg">
                                     <input name="username" type="text" class="input-text" placeholder="Full Name"  id="username">
 
-                                    <span id="name_error" style="color: red; margin-top: 5px;"></span>
+                                    <span id="name_error" style="color: #b92b27; margin-top: 5px;"></span>
 
                                     <i class="fa fa-envelope"></i>
                                 </div>
                                 <div class="form-group form-fg">
-                                    <input class="input-text" id="pass"   id="email" type="text" name="email" placeholder="Email">
+                                    <input class="input-text" id="email" type="text" name="email" placeholder="Email">
+
                                     <span id="email_valid" style="color: #b92b27;"></span>
                                     <i class="fa fa-unlock-alt"></i>
                                 </div>
@@ -327,8 +328,61 @@
             </div>
         </div>
     </div>  
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('form');
+            const username = document.getElementById('username');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const nameError = document.getElementById('name_error');
+            const emailError = document.getElementById('email_valid');
+            const passwordError = document.getElementById('pass_error');
+        
+            form.addEventListener('submit', function(e) {
+                let formIsValid = true;
+        
+                // Clear previous error messages
+                nameError.textContent = '';
+                emailError.textContent = '';
+                passwordError.textContent = '';
+        
+                // Username validation: not empty or whitespace only
+                if (!username.value.trim()) {
+                    nameError.textContent = 'Full Name is required';
+                    formIsValid = false;
+                }
+        
+                // Email validation: not empty, not whitespace only, and valid format
+                if (!email.value.trim()) {
+                    emailError.textContent = 'Email is required';
+                    formIsValid = false;
+                } else if (!validateEmail(email.value)) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    formIsValid = false;
+                }
+        
+                // Password validation: not empty or whitespace only
+                if (!password.value.trim()) {
+                    passwordError.textContent = 'Password is required';
+                    formIsValid = false;
+                }
+        
+                // Prevent form submission if validation fails
+                if (!formIsValid) {
+                    e.preventDefault();
+                }
+            });
+        
+            // Email format validation function using regex
+            function validateEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+        </script>
+        
     
-
+<!-- 
     <script>
         const username = document.getElementById('username');
         const email = document.getElementById('email');
@@ -372,7 +426,7 @@
                 form.submit();
             }
         });
-    </script>
+    </script> -->
 
      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

@@ -209,21 +209,26 @@
           <div class="modal-body">
               <input type="hidden" id="editCouponId" name="couponId">
               <div class="mb-3">
-                  <label for="editCouponCode" class="form-label">Coupon Code</label>
-                  <input type="text" class="form-control" id="editCouponCode" name="couponCode">
-              </div>
-              <div class="mb-3">
-                  <label for="editDiscount" class="form-label">Discount (%)</label>
-                  <input type="number" class="form-control" id="editDiscount" name="discount">
-              </div>
-              <div class="mb-3">
-                  <label for="editExpiryDate" class="form-label">Expiry Date</label>
-                  <input type="date" class="form-control" id="editExpiryDate" name="expiryDate" >
-              </div>
-              <div class="mb-3">
-                  <label for="editPurcheseAmount" class="form-label">Purchase Amount</label>
-                  <input type="text" class="form-control" id="editPurcheseAmount" name="purcheseAmount" >
-              </div>
+                <label for="editCouponCode" class="form-label">Coupon Code</label>
+                <input type="text" class="form-control" id="editCouponCode" name="couponCode">
+                <small class="form-text text-danger" id="editCouponCodeError"></small>
+            </div>
+            <div class="mb-3">
+                <label for="editDiscount" class="form-label">Discount (%)</label>
+                <input type="number" class="form-control" id="editDiscount" name="discount">
+                <small class="form-text text-danger" id="editDiscountError"></small>
+            </div>
+            <div class="mb-3">
+                <label for="editExpiryDate" class="form-label">Expiry Date</label>
+                <input type="date" class="form-control" id="editExpiryDate" name="expiryDate">
+                <small class="form-text text-danger" id="editExpiryDateError"></small>
+            </div>
+            <div class="mb-3">
+                <label for="editPurcheseAmount" class="form-label">Purchase Amount</label>
+                <input type="text" class="form-control" id="editPurcheseAmount" name="purcheseAmount">
+                <small class="form-text text-danger" id="editPurchaseAmountError"></small>
+            </div>
+            
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal" data-dismiss="modal">Close</button>
@@ -305,8 +310,129 @@
       }
   });
   </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const couponForm = document.getElementById('couponForm');
+        const couponCode = document.getElementById('couponCode');
+        const discount = document.getElementById('discount');
+        const expiryDate = document.getElementById('expiryDate');
+        const purchaseAmount = document.getElementById('purchaseAmount');
+        const couponCodeError = document.getElementById('couponCodeError');
+        const discountError = document.getElementById('discountError');
+        const expiryDateError = document.getElementById('expiryDateError');
+        const purchaseAmountError = document.getElementById('purchaseAmountError');
+    
+        couponForm.addEventListener('submit', function(e) {
+            // Initialize form validity flag
+            let formIsValid = true;
+    
+            // Clear previous error messages
+            couponCodeError.textContent = '';
+            discountError.textContent = '';
+            expiryDateError.textContent = '';
+            purchaseAmountError.textContent = '';
+    
+            // Coupon code validation (not empty or whitespace)
+            if (!couponCode.value.trim()) {
+                couponCodeError.textContent = 'Coupon code is required.';
+                formIsValid = false;
+            }
+    
+            // Discount validation (not empty, not negative)
+            if (!discount.value.trim()) {
+                discountError.textContent = 'Discount is required.';
+                formIsValid = false;
+            } else if (Number(discount.value) < 0) {
+                discountError.textContent = 'Discount cannot be negative.';
+                formIsValid = false;
+            }
+    
+            // Expiry date validation (not empty)
+            if (!expiryDate.value.trim()) {
+                expiryDateError.textContent = 'Expiry date is required.';
+                formIsValid = false;
+            }
+    
+            // Purchase amount validation (not empty, not negative)
+            if (!purchaseAmount.value.trim()) {
+                purchaseAmountError.textContent = 'Purchase amount is required.';
+                formIsValid = false;
+            } else if (Number(purchaseAmount.value) < 0) {
+                purchaseAmountError.textContent = 'Purchase amount cannot be negative.';
+                formIsValid = false;
+            }
+    
+            // Prevent form submission if validation fails
+            if (!formIsValid) {
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
+    
+    
   
-  
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const editCouponForm = document.getElementById('editCouponForm');
+            const editCouponCode = document.getElementById('editCouponCode');
+            const editDiscount = document.getElementById('editDiscount');
+            const editExpiryDate = document.getElementById('editExpiryDate');
+            const editPurchaseAmount = document.getElementById('editPurcheseAmount'); // Note the spelling 'Purchese'
+            const editCouponCodeError = document.getElementById('editCouponCodeError');
+            const editDiscountError = document.getElementById('editDiscountError');
+            const editExpiryDateError = document.getElementById('editExpiryDateError');
+            const editPurchaseAmountError = document.getElementById('editPurchaseAmountError');
+        
+            editCouponForm.addEventListener('submit', function(e) {
+                // Initialize form validity flag
+                let formIsValid = true;
+        
+                // Clear previous error messages
+                editCouponCodeError.textContent = '';
+                editDiscountError.textContent = '';
+                editExpiryDateError.textContent = '';
+                editPurchaseAmountError.textContent = '';
+        
+                // Coupon code validation
+                if (!editCouponCode.value.trim()) {
+                    editCouponCodeError.textContent = 'Coupon code is required.';
+                    formIsValid = false;
+                }
+        
+                // Discount validation
+                if (!editDiscount.value.trim()) {
+                    editDiscountError.textContent = 'Discount is required.';
+                    formIsValid = false;
+                } else if (Number(editDiscount.value) < 0) {
+                    editDiscountError.textContent = 'Discount cannot be negative.';
+                    formIsValid = false;
+                }
+        
+                // Expiry date validation
+                if (!editExpiryDate.value.trim()) {
+                    editExpiryDateError.textContent = 'Expiry date is required.';
+                    formIsValid = false;
+                }
+        
+                // Purchase amount validation
+                if (!editPurchaseAmount.value.trim()) {
+                    editPurchaseAmountError.textContent = 'Purchase amount is required.';
+                    formIsValid = false;
+                } else if (Number(editPurchaseAmount.value) < 0) {
+                    editPurchaseAmountError.textContent = 'Purchase amount cannot be negative.';
+                    formIsValid = false;
+                }
+        
+                // Prevent form submission if validation fails
+                if (!formIsValid) {
+                    e.preventDefault();
+                }
+            });
+        });
+        </script>
+        
 
     <!-- Optional JavaScript; choose one of the two! -->
 
