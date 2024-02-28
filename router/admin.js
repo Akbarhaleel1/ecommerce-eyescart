@@ -27,9 +27,9 @@ const checkSession = async (req, res, next) => {
 
 
 // getAdmin controllers
-const { getAdminLogin, getAdminDashboard, getAdminOrder, getAdminStatistics, getAdminProducts, getAdminUsers, getAdminOffers, getAddCategory, getadminCategory, getEditCategory, getAddProduct, deleteCategory, getEditProduct, uploads, getBlockUser, getUnblockUser, getListProduct, adminLogOut, getAddOffer, salesPdf, excelReport, adminCoupons, adminBanner, deleteCoupons, editCoupons } = require("../controllers/adminController");
+const { getAdminLogin, getAdminDashboard, getAdminOrder, getAdminStatistics, getAdminProducts, getAdminUsers, getAdminOffers, getAddCategory, getadminCategory, getEditCategory, getAddProduct, deleteCategory, getEditProduct, uploads, getBlockUser, getUnblockUser, getListProduct, adminLogOut, getAddOffer, salesPdf, excelReport, adminCoupons, adminBanner, deleteCoupons, editCoupons ,getEditOffers} = require("../controllers/adminController");
 //postAdmin controllers
-const { postAdminLogin, postAdminOffers, postAddCategory, postEditCategery, postAddProduct, deleteProduct, postEditProduct, postUpdateStatus, addOffer, postAddCoupon } = require("../controllers/adminController");
+const { postAdminLogin, postAdminOffers, postAddCategory, postEditCategery, postAddProduct, deleteProduct, postEditProduct, postUpdateStatus, addOffer, postAddCoupon,editOffer } = require("../controllers/adminController");
 
 
 // GET route for admin login page
@@ -141,6 +141,10 @@ router.post('/updateCoupon', editCoupons)
 router.get("/adminBanner", adminBanner)
 
 router.get('/adminLogOut', adminLogOut)
+
+router.get("/editOffers/:productId",getEditOffers)
+
+router.post("/postEditOffer",editOffer)
 
 
 module.exports = router;

@@ -116,83 +116,83 @@
 
 
       <%if(cart&& cart.length > 0){%>    
-      <div class="py-3 py-md-5 bg-light">
-        <div class="container">
+        <div class="py-3 py-md-5 bg-light">
+          <div class="container">
 
-          <div class="row">
-            <div class="col-md-12" style="padding-right: 227px;  right: 99px; position: relative;">
-              <div class="shopping-cart">
+            <div class="row">
+              <div class="col-md-12" style="padding-right: 227px;  right: 99px; position: relative;">
+                <div class="shopping-cart">
 
-                <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
-                  <div class="row">
-                    <div class="col-md-6" >
-                      <h4 style="position: absolute;">Product</h4>
-                    </div>
-                    <div class="cartInName" style="position: absolute; left: 300px;">
-                      <h4>Name</h4>
-                    </div>
-                    <div class="col-md-2">
-                      <h4>Price</h4>
-                    </div>
-                    
-                    <div class="col-md-2">
-                      <h4>Quantity</h4>
-                    </div>
-                    <div class="col-md-2">
-                      <h4>Action</h4>
+                  <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
+                    <div class="row">
+                      <div class="col-md-6" >
+                        <h4 style="position: absolute;">Product</h4>
+                      </div>
+                      <div class="cartInName" style="position: absolute; left: 300px;">
+                        <h4>Name</h4>
+                      </div>
+                      <div class="col-md-2">
+                        <h4>Price</h4>
+                      </div>
+                      
+                      <div class="col-md-2">
+                        <h4>Quantity</h4>
+                      </div>
+                      <div class="col-md-2">
+                        <h4>Action</h4>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                  <% cart.forEach(item=> { %>
-                    <div class="cart-item">
-                      <div class="row">
-                        <div class="col-md-6 my-auto">
-                          <a href="#">
-                            <label class="product-name" style=" margin-left: -235px;">
-                              <% if (item.image && item.image.length> 0) { %>
-                                <img src="<%= item.image[0] %>" style="width: 119px; height: 103px"
-                                  alt="<%= item.product %>">
-                                <% } else { %>
-                                  <!-- Handle case when there are no images -->
-                                  <img src="/placeholder-image.jpg" style="width: 119px; height: 103px"
-                                    alt="Placeholder Image">
-                                  <% } %>
+                    <% cart.forEach(item=> { %>
+                      <div class="cart-item">
+                        <div class="row">
+                          <div class="col-md-6 my-auto">
+                            <a href="#">
+                              <label class="product-name" style=" margin-left: -235px;">
+                                <% if (item.image && item.image.length> 0) { %>
+                                  <img src="<%= item.image[0] %>" style="width: 119px; height: 103px"
+                                    alt="<%= item.product %>">
+                                  <% } else { %>
+                                    <!-- Handle case when there are no images -->
+                                    <img src="/placeholder-image.jpg" style="width: 119px; height: 103px"
+                                      alt="Placeholder Image">
+                                    <% } %>
+                              </label>
+                            </a>
+                          </div>
+
+                          <div class="col-md-2 my-auto">
+                            <label class="price">
+                              <%= item.price %>
                             </label>
-                          </a>
-                        </div>
+                            <h4 style="position: absolute;right: 252px; bottom: -22px; font-size: 18px; width: 6pc;">
+                            <%= item.product%>
+                            </h4>
+                          </div>
+                          <div class="col-md-2 col-7 my-auto">
+                            <div class="quantity">
+                              <div class="input-group">
+                                <span class="btn btn1 minusBtn"><i class="fa fa-minus" ></i></span>
+                                <input type="text" value="<%= item.quantity %>" class="input-quantity quantityInput"  data-item-id="<%= item.productid %>"/>
+                                <span class="btn btn1 plusBtn"><i class="fa fa-plus"></i></span>
+                                <!-- <div id="errorMessage" style="color: red; display: none;"></div> -->
 
-                        <div class="col-md-2 my-auto">
-                          <label class="price">
-                            <%= item.price %>
-                          </label>
-                          <h4 style="position: absolute;right: 252px; bottom: -22px; font-size: 18px; width: 6pc;">
-                          <%= item.product%>
-                          </h4>
-                        </div>
-                        <div class="col-md-2 col-7 my-auto">
-                          <div class="quantity">
-                            <div class="input-group">
-                              <span class="btn btn1 minusBtn"><i class="fa fa-minus" ></i></span>
-                              <input type="text" value="<%= item.quantity %>" class="input-quantity quantityInput"  data-item-id="<%= item.productid %>"/>
-                              <span class="btn btn1 plusBtn"><i class="fa fa-plus"></i></span>
-                              <!-- <div id="errorMessage" style="color: red; display: none;"></div> -->
+                              </div>
+                            </div>
+                          </div>
 
+                          <div class="col-md-2 col-5 my-auto">
+                            <div class="remove">
+                              <a href="/cartItemRemove/<%= item.productid %>" class="btn btn-danger btn-sm"
+                                style="border-radius: 20px;">
+                                <i class="fa fa-trash"></i> Remove
+                              </a>
                             </div>
                           </div>
                         </div>
-
-                        <div class="col-md-2 col-5 my-auto">
-                          <div class="remove">
-                            <a href="/cartItemRemove/<%= item.productid %>" class="btn btn-danger btn-sm"
-                              style="border-radius: 20px;">
-                              <i class="fa fa-trash"></i> Remove
-                            </a>
-                          </div>
-                        </div>
                       </div>
-                    </div>
-                    <% }); %>
+                      <% }); %>
 
 
                  <%if(totalPrice){%>

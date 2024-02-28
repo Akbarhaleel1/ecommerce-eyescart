@@ -1,11 +1,41 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Banner</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h3>sssssssssss</h3>
+
+<div class="container mt-5">
+    <h2>Add Banner</h2>
+    <form>
+        <div class="form-group">
+            <label for="bannerTitle">Banner Title</label>
+            <input type="text" class="form-control" id="bannerTitle" placeholder="Enter title">
+        </div>
+        <div class="form-group">
+            <label for="bannerDescription">Description</label>
+            <textarea class="form-control" id="bannerDescription" rows="3" placeholder="Enter description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="bannerImage">Banner Image</label>
+            <input type="file" class="form-control-file" id="bannerImage">
+            <small id="fileHelp" class="form-text text-muted">Choose the banner image file.</small>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="bannerActive">
+            <label class="form-check-label" for="bannerActive">Active</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html> -->
+</html>

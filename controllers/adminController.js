@@ -13,6 +13,7 @@ const couponsCollection = require("../model/couponSchema")
 const PDFDocument = require("pdfkit-table");
 const ExcelJS = require("exceljs");
 const router = require("../router/user");
+const banner = require("../model/banner")
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -1203,12 +1204,12 @@ try {
     purcheseAmount: purcheseAmount
   }
 
-  console.log("eeeeeeee", couponsData);
+  
   const coupons1 = await couponsCollection.findOne({ couponCode: couponsData.couponCode })
   const coupons = await couponsCollection.find()
 
   if (coupons1) {
-    return res.render("adminCoupons", { message: "Coupon Already exists", coupons })
+    return res.render("adminCoupons", { message: "Coupon Code Already exists", coupons })
   }
   await couponsCollection.create(couponsData)
   res.redirect("/adminCoupons")
@@ -1287,9 +1288,49 @@ exports.adminBanner = (req, res) => {
 }
 
 
+exports.getEditOffers = async (req, res) => {
+  const productsData = await Product.find() 
+  const productId= req.params.productId; 
+
+  const offerProduct = await offerCollection.findById({_id:productId})
+
+  const product = await Product.findOne({productname:offerProduct.applicableProducts})
+
+  if(product){
+
+  }
+  res.render("editOffer",{productsData,offerProduct})
+}
 
 
 
+exports.editOffer = async (req, res) => {
+  try {
+    const { type, discount, startDate, endDate, category, isActives } = req.body;
+    const isActive = req.body.isActives ? true : false;
+    const product = await Product.findOne({ productname: category });
+  
+    console.log("ssss", product.productname);
+    const updateData = {
+      $set: {
+        type,
+        discount,
+        startDate,
+        endDate,
+        isActive,
+        applicableProducts: product.productname // Corrected property name
+      }
+    };
+
+    // Ensure that the query matches the intended document
+    const data = await offerCollection.updateOne({ applicableProducts: product.productname }, updateData);
+    console.log("Update Result:", data);
+
+    res.redirect("/adminOffers");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 

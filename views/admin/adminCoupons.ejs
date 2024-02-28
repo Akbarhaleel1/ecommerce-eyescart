@@ -135,6 +135,9 @@
                       <label for="couponCode">Coupon Code</label>
                       <input type="text" class="form-control" id="couponCode" placeholder="Enter coupon code" name="couponCode">
                       <small class="form-text text-danger" id="couponCodeError"></small>
+                      <%if(typeof message !== 'undefined'&&message){%>  
+                      <span style="color: red;"><%=message%></span>
+                      <%}%>
                   </div>
                   <div class="form-group">
                       <label for="discount">Discount (%)</label>

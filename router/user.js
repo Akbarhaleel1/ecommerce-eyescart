@@ -33,7 +33,7 @@ const checkSessionAndBlock = async (req, res, next) => {
 
 
 //getController
-const { getlogin, getsignup, index, about, contact, product, testimonial, account, wishlist, cart, getOtp, resendotp, getProduct_detail, logout, profile, getAddAddress, getOrder, getEditProfile, getplaceOrder, getpayment, getOrderConfirm, getCartItemRemove, getyourOrder, getChangepassword, getEditAddress, addCart, getOrderDetails, downloadInvoice, applyCoupon, getWallet, getDeposite, getWithdraw ,addWishlist,wishlistItemRemove,forgotPassword,getForgotOtp,root} = require('../controllers/userController')
+const { getlogin, getsignup, index, about, contact, product, testimonial, account, wishlist, cart, getOtp, resendotp, getProduct_detail, logout, profile, getAddAddress, getOrder, getEditProfile, getplaceOrder, getpayment, getOrderConfirm, getCartItemRemove, getyourOrder, getChangepassword, getEditAddress, addCart, getOrderDetails, downloadInvoice, applyCoupon, getWallet, getDeposite, getWithdraw ,addWishlist,wishlistItemRemove,forgotPassword,getForgotOtp,root,getTestCart} = require('../controllers/userController')
 
 //postController
 const { postlogin, postsignup, postOtp, postEditProfile, postAddAddress, postCart, postChangepassword, updateQuantity, postEditAddress, getRazorpayOrder, postOrderConfirm, postCancelOrder, postReturnOrder, postDeposit, postWalletWithdraw,getDepositepost,getdepoamount,postforgotPassword,postforgotPass ,postForgotOtp} = require("../controllers/userController")
@@ -203,6 +203,8 @@ router.get("/wishlist", checkSessionAndBlock, wishlist)
 
 router.get("/addWishlist/:productid",addWishlist)
 
+
+router.get("/testCart",getTestCart)
 
 
 

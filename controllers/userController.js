@@ -106,11 +106,12 @@ exports.postlogin = async (req, res) => {
 
     if (!data.email || !data.password) {
       res.render("login", { message: "Username and password are required." });
+      return
     } else {
 
       const user = await userCollection.findOne({ email: data.email });
 
-      console.log("user is email",user.email);
+      
 
       if (!user) {
         console.log("Account doesn't exist");
@@ -1778,4 +1779,10 @@ exports.postForgotOtp = async (req,res)=>{
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
   }
+}
+
+
+exports.getTestCart = async(req,res)=>{
+     
+  res.render("testCart")
 }

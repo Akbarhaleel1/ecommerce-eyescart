@@ -1,0 +1,486 @@
+<%-include('header')-%>
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <!-- <link href="css/style.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>">
+
+
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- font awesome style -->
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .cart-container {
+            background-color: white;
+            width: 40%;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .cart-header {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .cart-description {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .shop-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .shop-button:hover {
+            background-color: #0056b3;
+        }
+
+        .coupon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            /* Adjust the space between the input box and the button */
+            margin: 20px;
+        }
+
+        .coupon-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #007BFF;
+            /* Change the border color as needed */
+            border-radius: 5px;
+            /* Rounded corners for the input box */
+            outline: none;
+            /* Removes the outline to make it look cleaner */
+            width: 200px;
+            /* Adjust based on your needs */
+        }
+
+        .apply-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            /* Button color */
+            color: white;
+            /* Text color */
+            border: none;
+            border-radius: 5px;
+            /* Rounded corners for the button */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .apply-button:hover {
+            background-color: #0056b3;
+            /* Button hover color */
+        }
+
+        @media (max-width: 1550px) {}
+    </style>
+
+    </head>
+
+    <body>
+
+
+
+
+        <%if(cart&& cart.length> 0){%>
+            <div class="py-3 py-md-5 bg-light">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-md-12" style="padding-right: 227px;  right: 99px; position: relative;">
+                            <div class="shopping-cart">
+
+                                <div class="cart-header d-none d-sm-none d-mb-block d-lg-block">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 style="position: absolute;">Product</h4>
+                                        </div>
+                                        <div class="cartInName" style="position: absolute; left: 300px;">
+                                            <h4>Name</h4>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h4>Price</h4>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <h4>Quantity</h4>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h4>Action</h4>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <% cart.forEach(item=> { %>
+                                    <div class="cart-item">
+                                        <div class="row">
+                                            <div class="col-md-6 my-auto">
+                                                <a href="#">
+                                                    <label class="product-name" style=" margin-left: -235px;">
+                                                        <% if (item.image && item.image.length> 0) { %>
+                                                            <img src="<%= item.image[0] %>"
+                                                                style="width: 119px; height: 103px"
+                                                                alt="<%= item.product %>">
+                                                            <% } else { %>
+                                                                <!-- Handle case when there are no images -->
+                                                                <img src="/placeholder-image.jpg"
+                                                                    style="width: 119px; height: 103px"
+                                                                    alt="Placeholder Image">
+                                                                <% } %>
+                                                    </label>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-md-2 my-auto">
+                                                <label class="price">
+                                                    <%= item.price %>
+                                                </label>
+                                                <h4
+                                                    style="position: absolute;right: 252px; bottom: -22px; font-size: 18px; width: 6pc;">
+                                                    <%= item.product%>
+                                                </h4>
+                                            </div>
+                                            <div class="col-md-2 col-7 my-auto">
+                                                <div class="quantity">
+                                                    <div class="input-group">
+                                                        <span class="btn btn1 minusBtn"><i
+                                                                class="fa fa-minus"></i></span>
+                                                        <input type="text" value="<%= item.quantity %>"
+                                                            class="input-quantity quantityInput"
+                                                            data-item-id="<%= item.productid %>" />
+                                                        <span class="btn btn1 plusBtn"><i class="fa fa-plus"></i></span>
+                                                        <!-- <div id="errorMessage" style="color: red; display: none;"></div> -->
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2 col-5 my-auto">
+                                                <div class="remove">
+                                                    <a href="/cartItemRemove/<%= item.productid %>"
+                                                        class="btn btn-danger btn-sm" style="border-radius: 20px;">
+                                                        <i class="fa fa-trash"></i> Remove
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+
+
+                                        <%if(totalPrice){%>
+                                            <!-- Bill Details Section -->
+                                            <div class="col-md-5"
+                                                style="position: sticky; left:1050px;bottom:145px;  width: 450px; margin-left:63pc;margin-top: 44px">
+                                                <h2>Bill Details</h2>
+                                                <div class="border p-3">
+
+                                                    <p><strong style="position: relative;left: -39px;">Total
+                                                            Price:</strong>
+                                                        <span id="totalPriceElement"
+                                                            style="position: absolute;left: 200px;top: 64px;">
+                                                            <%= totalPrice.toFixed(2) %>
+                                                        </span>
+                                                    </p>
+
+                                                    <p><strong>Discount:</strong>
+                                                        <span id="discountPriceElement">
+                                                            <%= discountPrice.toFixed(2) %>
+                                                        </span>
+                                                    </p>
+
+                                                    <div class="coupon-container">
+                                                        <form id="couponForm">
+                                                            <input type="text" placeholder="Enter coupon code"
+                                                                id="couponCode" class="coupon-input"
+                                                                name="couponCode" />
+                                                            <button type="submit" class="apply-button">Apply</button>
+                                                        </form>
+                                                    </div>
+                                                    <span id="couponMessage"></span>
+
+
+                                                    <div id="errorMessage" style="color: red; display: none;"></div>
+
+                                                    <hr>
+
+                                                    <p><strong>Total Payable:</strong>
+                                                        <span id="discountFinalElement">
+                                                            <%= (totalPrice - discountPrice).toFixed(2) %>
+                                                        </span>
+                                                        <span id="couponDiscount"></span>
+                                                    </p>
+
+                                                </div>
+
+                                                <a href="/payment" id="paymentLink">
+                                                    <button class="btn btn-primary btn-block mt-3"
+                                                        id="proceedToPaymentBtn">Proceed To Payment</button>
+                                                </a>
+
+                                            </div>
+                                            <%}%>
+
+
+                            </div>
+                        </div>
+
+                        <!-- Add more cart items as needed -->
+
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            <%}else{%>
+
+
+                <div class="cart-container">
+                    <h1 class="cart-header">Your Cart is Empty</h1>
+                    <p class="cart-description">You haven't added any items to your cart yet. Start shopping to fill it
+                        up!</p>
+                    <a href="/index" class="shop-button">Start Shopping</a>
+                </div>
+
+                <%}%>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const form = document.getElementById('couponForm');
+                            const couponMessageSpan = document.getElementById('couponMessage');
+                            const couponDiscountSpan = document.getElementById('couponDiscount'); // Get the discount span
+
+                            form.onsubmit = async function (e) {
+                                e.preventDefault(); // Prevent the default form submission
+
+                                const couponCode = document.getElementById('couponCode').value;
+
+                                // Send the coupon code to the server using Fetch API
+                                try {
+                                    const response = await fetch('/applyCoupon', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ couponCode }),
+                                    });
+
+                                    const result = await response.json(); // Assuming the server sends back JSON
+
+                                    // Handle the response
+                                    if (response.ok) {
+                                        // Display success message and discount
+                                        couponMessageSpan.textContent = result.message || 'Coupon applied successfully!';
+                                        couponMessageSpan.style.color = 'green'; // Optional: Change color for success
+
+                                        // Assuming the discount is part of the response
+                                        couponDiscountSpan.textContent = `Discount Applied: %${result.discount}`;
+                                        couponDiscountSpan.style.color = 'blue'; // Optional: Change color for discount info
+                                    } else {
+                                        // Display error message from server or a generic error message
+                                        couponMessageSpan.textContent = result.message || 'Failed to apply coupon.';
+                                        couponMessageSpan.style.color = 'red'; // Optional: Change color for error
+                                        couponDiscountSpan.textContent = ''; // Clear previous discount info if any
+                                    }
+                                } catch (error) {
+                                    console.error('Error applying coupon:', error);
+                                    // Display error message
+                                    couponMessageSpan.textContent = 'An error occurred while applying the coupon.';
+                                    couponMessageSpan.style.color = 'red';
+                                    couponDiscountSpan.textContent = ''; // Clear previous discount info if any
+                                }
+                            };
+                        });
+
+
+                    </script>
+
+                    <!-- <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('couponForm');
+  form.onsubmit = async function(e) {
+    e.preventDefault(); // Prevent the default form submission
+    
+    const couponCode = document.getElementById('couponCode').value;
+    
+    // Send the coupon code to the server using Fetch API
+    try {
+      const response = await fetch('/applyCoupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ couponCode }),
+      });
+      
+      const result = await response.json(); // Assuming the server sends back JSON
+      
+      // Handle the response (e.g., show a message to the user)
+      console.log(result); // For demonstration, log the server's response
+    } catch (error) {
+      console.error('Error applying coupon:', error);
+    }
+  };
+});
+
+      </script> -->
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var plusButtons = document.querySelectorAll('.plusBtn');
+                            var minusButtons = document.querySelectorAll('.minusBtn');
+
+                            plusButtons.forEach(function (btn) {
+                                btn.addEventListener('click', function () {
+                                    var input = this.parentNode.querySelector('.quantityInput');
+                                    var newQuantity = parseInt(input.value) + 1;
+                                    input.value = newQuantity;
+                                    updateQuantityOnServer(input, newQuantity);
+                                });
+                            });
+
+                            minusButtons.forEach(function (btn) {
+                                btn.addEventListener('click', function () {
+                                    var input = this.parentNode.querySelector('.quantityInput');
+                                    if (input.value > 1) {
+                                        var newQuantity = parseInt(input.value) - 1;
+                                        input.value = newQuantity;
+                                        updateQuantityOnServer(input, newQuantity);
+                                    }
+                                });
+                            });
+
+
+                        });
+                    </script>
+
+
+                    <!-- Inside your EJS template -->
+                    <script>
+                        function updateQuantityOnServer(inputElement) {
+                            var newQuantity = inputElement.value; // Assuming this is triggered by an event where `inputElement` is the quantity input
+                            var itemId = inputElement.getAttribute('data-item-id');
+                            fetch('/update-quantity', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ itemId: itemId, quantity: newQuantity }),
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Update the DOM elements with new values
+                                        document.getElementById('totalPriceElement').innerText = data.totalPrice.toFixed(2);
+                                        document.getElementById('discountPriceElement').innerText = data.discountPrice.toFixed(2);
+                                        document.getElementById('discountFinalElement').innerText = data.totalPayable.toFixed(2);
+                                        document.getElementById('errorMessage').innerText = data.message = '';
+
+                                        document.getElementById('proceedToPaymentBtn').disabled = false;
+
+                                    } else {
+                                        // Handle error, show message to user
+                                        document.getElementById('errorMessage').style.display = 'block';
+                                        document.getElementById('errorMessage').innerText = data.message;
+                                        document.getElementById('proceedToPaymentBtn').disabled = true;
+
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error updating quantity:', error);
+                                    // Optionally handle/display this error on the UI
+                                });
+
+
+
+                            function checkItemsStockAndAdjustPaymentButton() {
+                                var allQuantitiesValid = true;
+                                var quantityInputs = document.querySelectorAll('.quantityInput');
+                                quantityInputs.forEach(function (input) {
+                                    var quantity = parseInt(input.value);
+                                    var maxStock = parseInt(input.getAttribute('data-max-stock')); // Assuming you have data-max-stock attribute
+                                    if (quantity > maxStock) {
+                                        allQuantitiesValid = false;
+                                    }
+                                });
+
+                                // Enable or disable the Proceed to Payment button based on stock availability
+                                var proceedToPaymentBtn = document.getElementById('proceedToPaymentBtn');
+                                if (allQuantitiesValid) {
+                                    proceedToPaymentBtn.disabled = false;
+                                } else {
+                                    proceedToPaymentBtn.disabled = true;
+                                }
+                            }
+                        }
+                    </script>
+
+
+
+                    <!-- jQery -->
+                    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+                    <!-- popper js -->
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                        crossorigin="anonymous">
+                        </script>
+                    <!-- bootstrap js -->
+                    <script type="text/javascript" src="js/bootstrap.js"></script>
+                    <!-- custom js -->
+                    <script type="text/javascript" src="js/custom.js"></script>
+
+
+    </body>
+
+    </html>
+
+
+
+    <%-include('footer')-%>
