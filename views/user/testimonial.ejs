@@ -1,7 +1,39 @@
 <%-include('header')-%>
+<style>
+  .no-reviews-container {
+    padding: 50px 15px;
+    background-color: #f8f9fa; /* Light gray background */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
 
+.no-reviews-image {
+    max-width: 200px; /* Adjust based on your image */
+    margin-bottom: 30px;
+}
 
-  <!-- client section -->
+.no-reviews-title {
+    color: #333; /* Dark text for contrast */
+    margin-bottom: 20px;
+}
+
+.no-reviews-text {
+    color: #666; /* Lighter text for the description */
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .no-reviews-container {
+        padding: 30px 10px;
+    }
+    
+    .no-reviews-image {
+        max-width: 150px;
+    }
+}
+
+</style>
+<% if (userReviews) { %>  <!-- client section -->
   <section class="client_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
@@ -20,28 +52,27 @@
                   <div class="img-box">
                     <img src="images/client.jpg" alt="">
                   </div>
+                  <% if ( userReviews[0]) { %>  
                   <div class="detail-box">
                     <div class="client_info">
                       <div class="client_name">
                         <h5>
-                          Morojink
+                       <%=userReviews[0].productName%>
                         </h5>
                         <h6>
-                          Customer
+                          <%=userReviews[0].userName%>
+
                         </h6>
                       </div>
                       <i class="fa fa-quote-left" aria-hidden="true"></i>
                     </div>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
+                      <%=userReviews[0].body%>
+
+
                     </p>
                   </div>
+                  <%}%>
                 </div>
               </div>
             </div>
@@ -55,29 +86,27 @@
                   <div class="img-box">
                     <img src="images/client.jpg" alt="">
                   </div>
+                  <% if ( userReviews[1]) { %>  
+
                   <div class="detail-box">
                     <div class="client_info">
                       <div class="client_name">
                         <h5>
-                          Morojink
+                          <%=userReviews[1].productName%>
                         </h5>
                         <h6>
-                          Customer
+                          <%=userReviews[1].userName%>
                         </h6>
                       </div>
                       <i class="fa fa-quote-left" aria-hidden="true"></i>
                     </div>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
+                      <%=userReviews[1].body%>
                     </p>
                   </div>
                 </div>
+                <%}%>
+
               </div>
             </div>
           </div>
@@ -90,43 +119,59 @@
                   <div class="img-box">
                     <img src="images/client.jpg" alt="">
                   </div>
+                  <% if (userReviews[2]) { %>  
+
                   <div class="detail-box">
                     <div class="client_info">
                       <div class="client_name">
                         <h5>
-                          Morojink
+                          <%=userReviews[2].productName%>
                         </h5>
                         <h6>
-                          Customer
+                          <%=userReviews[2].userName%>
+
                         </h6>
                       </div>
                       <i class="fa fa-quote-left" aria-hidden="true"></i>
                     </div>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
+                      <%=userReviews[2].body%>
+
                     </p>
                   </div>
                 </div>
+                <%}%>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ol class="carousel-indicators">
+      <ol class="carousel-indicators" style="position: relative; top:-40px;">
+        <% if (userReviews[0]) { %> 
         <li data-target="#customCarousel2" data-slide-to="0" class="active"></li>
+        <%}%>
+        <% if (userReviews[1]) { %> 
         <li data-target="#customCarousel2" data-slide-to="1"></li>
+        <%}%>
+        <% if (userReviews[2]) { %> 
         <li data-target="#customCarousel2" data-slide-to="2"></li>
+        <%}%>
       </ol>
     </div>
   </section>
   <!-- end client section -->
+<%}else{%> 
+  
+  <div class="no-reviews-container">
+    <div class="text-center">
+        <!-- <img src="path/to/your/image/no-reviews.svg" alt="No Reviews" class="img-fluid no-reviews-image"> -->
+        <h2 class="no-reviews-title">Oops! No Reviews Yet.</h2>
+        <p class="no-reviews-text">It looks like there are no reviews for our products yet. Be the first to leave a review and help others make informed decisions.</p>
+        <a href="/product" class="btn btn-primary">Write a Review</a>
+    </div>
+</div>
 
+  <%}%>
 
   <!-- info section -->
   <section class="info_section layout_padding2">

@@ -13,7 +13,10 @@ const couponsCollection = require("../model/couponSchema")
 const PDFDocument = require("pdfkit-table");
 const ExcelJS = require("exceljs");
 const router = require("../router/user");
-const banner = require("../model/banner")
+const banner = require("../model/banner");
+const Review = require("../model/reviewSchema");
+const { image } = require("pdfkit");
+const Contact = require("../model/contactSchema");
 
 // const storage = multer.diskStorage({
 //   destination: function (req, file, cb) {
@@ -1348,3 +1351,50 @@ exports.adminLogOut = (req, res) => {
     res.redirect("/adminLogin");
   });
 };
+
+
+
+// exports.getReviews = async (req, res) => {
+//   try {
+//     let reviews = await Review.find();
+//     res.render("adminReviews", { reviews });
+//   } catch (error) {
+//     console.error("Error fetching reviews:", error);
+//     res.status(500).send("Error fetching reviews");
+//   }
+// };
+
+exports.getReviews = async (req, res) => {
+  try {
+    const perPage = 6; // Number of items you want to display per page
+    const page = req.query.page || 1; // Current page
+
+    let reviews = await Review.find()
+                              .skip((perPage * page) - perPage)
+                              .limit(perPage);
+
+    let count = await Review.countDocuments(); // Count the total number of reviews
+
+    res.render("adminReviews", {
+      reviews: reviews,
+      current: page,
+      pages: Math.ceil(count / perPage)
+    });
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    res.status(500).send("Error fetching reviews");
+  }
+};
+
+
+
+exports.getContact = async (req,res)=>{
+  const contact = await Contact.find()
+  res.render('admincontact',{contact})
+}
+
+exports.contactDelete = async(req,res)=>{
+  const contactId = req.params.id
+  console.log("eeee",contactId);
+  await Contact.findOneAndDelete({_id:contactId})
+}

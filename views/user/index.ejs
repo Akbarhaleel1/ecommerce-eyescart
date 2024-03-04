@@ -128,13 +128,13 @@
             </div>
           </div>
         </div>
-        <ol class="carousel-indicators">
+        <!-- <ol class="carousel-indicators">
           <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
           <li data-target="#customCarousel1" data-slide-to="1"></li>
           <li data-target="#customCarousel1" data-slide-to="2"></li>
           <li data-target="#customCarousel1" data-slide-to="3"></li>
           <li data-target="#customCarousel1" data-slide-to="4"></li>
-        </ol>
+        </ol> -->
       </div>
 
     </section>
@@ -311,132 +311,145 @@
   <!-- end product section -->
 
 
-
-  <!-- client section -->
-  <section class="client_section layout_padding-bottom">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Testimonial
-        </h2>
-      </div>
-    </div>
-    <div id="customCarousel2" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-10 mx-auto">
-                <div class="box">
-                  <div class="img-box">
-                    <img src="images/client.jpg" alt="">
-                  </div>
-                  <div class="detail-box">
-                    <div class="client_info">
-                      <div class="client_name">
-                        <h5>
-                          Morojink
-                        </h5>
-                        <h6>
-                          Customer
-                        </h6>
-                      </div>
-                      <i class="fa fa-quote-left" aria-hidden="true"></i>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-10 mx-auto">
-                <div class="box">
-                  <div class="img-box">
-                    <img src="images/client.jpg" alt="">
-                  </div>
-                  <div class="detail-box">
-                    <div class="client_info">
-                      <div class="client_name">
-                        <h5>
-                          Morojink
-                        </h5>
-                        <h6>
-                          Customer
-                        </h6>
-                      </div>
-                      <i class="fa fa-quote-left" aria-hidden="true"></i>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-10 mx-auto">
-                <div class="box">
-                  <div class="img-box">
-                    <img src="images/client.jpg" alt="">
-                  </div>
-                  <div class="detail-box">
-                    <div class="client_info">
-                      <div class="client_name">
-                        <h5>
-                          Morojink
-                        </h5>
-                        <h6>
-                          Customer
-                        </h6>
-                      </div>
-                      <i class="fa fa-quote-left" aria-hidden="true"></i>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore
-                      et
-                      dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                      aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                      cillum
-                      dolore eu fugia
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <% if (userReviews) { %>  <!-- client section -->
+    <section class="client_section layout_padding">
+      <div class="container">
+        <div class="heading_container heading_center">
+          <h2>
+            Testimonial
+          </h2>
         </div>
       </div>
-      <ol class="carousel-indicators">
-        <li data-target="#customCarousel2" data-slide-to="0" class="active"></li>
-        <li data-target="#customCarousel2" data-slide-to="1"></li>
-        <li data-target="#customCarousel2" data-slide-to="2"></li>
-      </ol>
-    </div>
-  </section>
-  <!-- end client section -->
+      <div id="customCarousel2" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="img-box">
+                      <img src="images/client.jpg" alt="">
+                    </div>
+                    <% if ( userReviews[0]) { %>  
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                         <%=userReviews[0].productName%>
+                          </h5>
+                          <h6>
+                            <%=userReviews[0].userName%>
+  
+                          </h6>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        <%=userReviews[0].body%>
+  
+  
+                      </p>
+                    </div>
+                    <%}%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="img-box">
+                      <img src="images/client.jpg" alt="">
+                    </div>
+                    <% if ( userReviews[1]) { %>  
+  
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                            <%=userReviews[1].productName%>
+                          </h5>
+                          <h6>
+                            <%=userReviews[1].userName%>
+                          </h6>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        <%=userReviews[1].body%>
+                      </p>
+                    </div>
+                  </div>
+                  <%}%>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-10 mx-auto">
+                  <div class="box">
+                    <div class="img-box">
+                      <img src="images/client.jpg" alt="">
+                    </div>
+                    <% if (userReviews[2]) { %>  
+  
+                    <div class="detail-box">
+                      <div class="client_info">
+                        <div class="client_name">
+                          <h5>
+                            <%=userReviews[2].productName%>
+                          </h5>
+                          <h6>
+                            <%=userReviews[2].userName%>
+  
+                          </h6>
+                        </div>
+                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                      </div>
+                      <p>
+                        <%=userReviews[2].body%>
+  
+                      </p>
+                    </div>
+                  </div>
+                  <%}%>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ol class="carousel-indicators" style="position: relative; top:-40px;">
+          <% if (userReviews[0]) { %> 
+          <li data-target="#customCarousel2" data-slide-to="0" class="active"></li>
+          <%}%>
+          <% if (userReviews[1]) { %> 
+          <li data-target="#customCarousel2" data-slide-to="1"></li>
+          <%}%>
+          <% if (userReviews[2]) { %> 
+          <li data-target="#customCarousel2" data-slide-to="2"></li>
+          <%}%>
+        </ol>
+      </div>
+    </section>
+    <!-- end client section -->
+  <%}else{%> 
+    
+    <div class="no-reviews-container">
+      <div class="text-center">
+          <!-- <img src="path/to/your/image/no-reviews.svg" alt="No Reviews" class="img-fluid no-reviews-image"> -->
+          <h2 class="no-reviews-title">Oops! No Reviews Yet.</h2>
+          <p class="no-reviews-text">It looks like there are no reviews for our products yet. Be the first to leave a review and help others make informed decisions.</p>
+          <a href="/product" class="btn btn-primary">Write a Review</a>
+      </div>
+  </div>
+  
+    <%}%>
 
 
   <!-- info section -->

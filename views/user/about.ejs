@@ -6,7 +6,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding">
+  <!-- <section class="about_section layout_padding">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6">
@@ -37,7 +37,42 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
+
+  <section class="about_section layout_padding">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="img_container">
+                    <div class="img-box b1">
+                        <img src="/uploads/about.png.jpg" alt="">
+                    </div>
+                    <div class="img-box b2">
+                        <img src="/uploads/about2.png.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="detail-box" style="position: relative; top: -240px;">
+                    <h2>
+                        About Our Shop
+                    </h2>
+                    <p>
+                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.
+                    </p>
+                    <!-- Initially visible content ends here -->
+                    <div id="moreText" style="display:none;">
+                        <p>
+                            By injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+                        </p>
+                    </div>
+                    <a href="javascript:void(0);" onclick="readMore()" style="text-decoration: none;">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
   <!-- end about section -->
 
 
@@ -181,3 +216,18 @@
   <!-- end info_section -->
 
 
+  <script>
+    function readMore() {
+      var moreText = document.getElementById("moreText");
+      var readMoreBtn = document.querySelector(".detail-box a");
+    
+      if (moreText.style.display === "none") {
+        moreText.style.display = "block";
+        readMoreBtn.textContent = "Read Less";
+      } else {
+        moreText.style.display = "none";
+        readMoreBtn.textContent = "Read More";
+      }
+    }
+    </script>
+    

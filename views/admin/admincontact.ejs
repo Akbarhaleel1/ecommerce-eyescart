@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #0042db;
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0042db;
+      padding-top: 20px;
+      border-radius: 0 40px 40px 0;
+    }
+
+    .sidebar a {
+      padding: 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
+    }
+
+    .sidebar a:hover {
+      background-color: #002080;
+    }
+
+    .sidebar a.active {
+      background-color: #002080;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .logout {
+      margin-top: 20px;
+    }
+
+    /* New styles for the main content */
+    .statistics-container {
+      background-color: #fff;
+      margin-top: 29px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* You can add more specific styles for your content as needed */
+    .statistics-container h1 {
+      color: #333;
+    }
+
+    #sales-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #sales-table th, #sales-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+    }
+
+    #sales-table th {
+      background-color: #f2f2f2;
+    }
+
+    
+#filter-form {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: absolute;
+    left: 55pc;
+    top: 85px;
+    padding:7px
+}
+
+#filter-form label {
+    color: #333333; /* Dark gray color for the text */
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#filter-form input[type="date"] {
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 4px;
+    padding: 10px;
+    margin-right: 20px;
+    color: #333333;
+    font-size: 16px;
+}
+
+#filter-form button {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#filter-form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+    
+  </style>
+      <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 10px;
+        }
+        .container-fluid {
+            padding: 190px;
+            margin-left: 80px;
+            margin-top: -116px; 
+        }
+        .no-contact-container {
+        text-align: center;
+        background: white;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+    .no-contact-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+    .no-contact-container p {
+        margin-bottom: 30px;
+        color: #666;
+    }
+    .no-contact-container a {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .no-contact-container a:hover {
+        background-color: #0056b3;
+    }
+        
+    </style>
+</head>
+<body>
+
+<header>
+  Admin Statistics
+</header>
+
+<div class="sidebar">
+  <div class="sidebar-heading"></div>
+  <a href="adminDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+  <a href="adminOrder"><i class="fas fa-shopping-cart"></i> Orders</a>
+  <a href="adminStatistics" ><i class="fas fa-chart-bar"></i> Statistics</a>
+  <a href="adminProducts"><i class="fas fa-box"></i> Products</a>
+  <a href="adminCategory"><i class="fas fa-box"></i> Category</a>
+  <a href="adminUsers"><i class="fas fa-users"></i> Users</a>
+  <a href="adminOffers"><i class="fas fa-percent"></i> Offers</a>
+  <a href="adminCoupons"><i class="fas fa-ticket-alt"></i> Coupons</a>
+  <a href="adminReview" ><i class="fas fa-star"></i> User Reviews</a>
+  <a href="adminReview" class="active" ><i class="fa fa-mobile" aria-hidden="true"></i> User Contact</a>
+
+  <a href="/adminLogOut" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+
+<!-- Contact Detail Modal -->
+<div class="modal fade" id="contactDetailModal" tabindex="-1" role="dialog" aria-labelledby="contactDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="contactDetailModalLabel">Contact Inquiry Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Placeholders for the contact details -->
+          <p><strong>Name:</strong> <span id="contactName"></span></p>
+          <p><strong>Email:</strong> <span id="contactEmail"></span></p>
+          <p><strong>Message:</strong> <span id="contactMessage"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+  <div class="container-fluid">
+    <h2>Contact Inquiries</h2>
+    <% if (contact && contact.length > 0) { %>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% contact.forEach((item, index) => { %>
+                    <tr>
+                        <th scope="row"><%= index + 1 %></th>
+                        <td><%= item.name %></td>
+                        <td><%= item.email %></td>
+                        <td><%= item.phone %></td>
+                        <td><%= item.message %></td>
+                        <td>
+                            <!-- Assuming MongoDB _id for uniqueness -->
+                            <a href="/contactDelete/<%= item._id %>" onclick="return confirmDelete('<%= item._id %>');">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="no-contact-container">
+            <h2>No Contact Inquiries Available</h2>
+            <p>It looks like there are no contact inquiries yet.</p>
+        </div>
+            <% } %>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        // Example confirmation logic; customize as needed
+        return confirm("Are you sure you want to delete this contact?");
+    }
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(itemId) {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = `/contactDelete/${itemId}`;
+            }
+          })
+        }
+        </script>
+        
+    <script>
+        $(document).ready(function() {
+            $('#contactDetailModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var contactId = button.data('id'); // Extract info from data-* attributes
+                
+                // Example: Fetch contact details from your server using the contactId
+                // This is a placeholder for your actual fetch/request code
+                var contactDetails = "Fetch details for ID: " + contactId;
+                
+                // Update the modal's content.
+                var modal = $(this);
+                modal.find('.modal-body').text(contactDetails);
+            });
+        });
+        </script>
+        
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

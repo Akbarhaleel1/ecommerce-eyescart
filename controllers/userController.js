@@ -19,6 +19,8 @@ const Razorpay = require('razorpay');
 const session = require('express-session');
 const couponsCollection = require("../model/couponSchema");
 const wishlistCollections = require("../model/wishlistSchema")
+const Review = require("../model/reviewSchema")
+const Contact = require("../model/contactSchema")
 const flash = require('connect-flash');
 // require('dotenv').config()
 require('dotenv').config();
@@ -29,6 +31,8 @@ require('dotenv').config();
 //   key_id: 'rzp_test_j6Z5wtQQMu2gyk',
 //   key_secret: 'TYLjBiMyaOYRTUJDt5NzVxH2'
 // });
+
+
 
 
 app.use(session({
@@ -278,8 +282,19 @@ exports.getProduct_detail = async (req, res) => {
     console.log(productId);
     const product = await Product.findById(productId);
     const message = req.query.message;
+    const reviews = await Review.find({productName:product.productname})
 
-    res.render("productDetail", { product, message });
+    let totalReviews;
+    if(reviews){
+  for(let i=0;i<reviews.length;i++){
+      totalReviews=i;
+    }
+    }
+    let averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews;
+    averageRating = Math.round(averageRating * 2) / 2;
+    console.log("total reviews is",totalReviews);
+
+    res.render("productDetail", { product, message,reviews,totalReviews,averageRating  });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -1618,8 +1633,9 @@ exports.logout = (req, res) => {
 
 exports.index = async (req, res) => {
 try {
+  const userReviews = await Review.find();
   const products = await Product.find({ isListed: false })
-  res.render('index', { products })
+  res.render('index', { products,userReviews })
 } catch (error) {
   res.status(500).send('Internal Server Error');
 }
@@ -1637,8 +1653,10 @@ exports.contact = (req, res) => {
 }
 
 
-exports.testimonial = (req, res) => {
-  res.render('testimonial')
+exports.testimonial = async (req, res) => {
+  const userReviews = await Review.find()
+  console.log("review is ike ",userReviews);
+  res.render('testimonial',{userReviews})
 }
 
 
@@ -1782,7 +1800,70 @@ exports.postForgotOtp = async (req,res)=>{
 }
 
 
-exports.getTestCart = async(req,res)=>{
-     
-  res.render("testCart")
-}
+
+  exports.userReviews = async (req, res) => {
+    try {
+      const userId = req.session.user.userId;
+      const productId = req.params.productid;
+      const user = await userCollection.findById(userId);
+      const product = await Product.findById(productId);
+      console.log(req.body);
+
+      if (!user || !product) {
+        return res.status(404).send('User or product not found');
+      }
+
+      const {name,email, rate, message } = req.body;
+
+      if (!name || !email || !rate || !message) {
+        // Respond with an error status code and message
+         console.log("All field are required");
+       
+    }else{
+      const newReview = new Review({
+        userName: name, // Assuming `name` is the field on your user model
+        userEmail: email, // Assuming `email` is the field on your user model
+        productName: product.productname,
+        // productImage: product.imageUrl,
+        
+        rating: rate,
+        body: message, // Use `body` to align with your schema
+    });
+    
+
+    await newReview.save();
+    console.log("review is like this", newReview);
+    }
+
+    
+    } catch (err) {
+      console.error('Error saving review:', err);
+      res.status(400).send('Error saving review');
+    }
+  };
+
+
+  exports.postContact = async (req, res) => {
+    const { name, mobileNumber, email, message } = req.body;
+  
+    const data = {
+      name: name,
+      phone: mobileNumber,
+      email: email,
+      message: message
+    };
+  
+    try {
+      // Attempt to save the contact data to the database
+      await Contact.create(data);
+      // Redirect to the contact page if the operation is successful
+      setTimeout(() => {
+        res.render('contact');
+      }, 2000);
+      
+    } catch (error) {
+      // Log the error and potentially redirect to an error page or send an error response
+      console.error('Failed to save contact data:', error);
+      res.status(500).send('Server error');
+    }
+  };

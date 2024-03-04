@@ -2,190 +2,184 @@
 <%-include('header')-%>
 
 
+<style>
+  .error-message {
+  color: red;
+  font-size: 0.8em;
+}
 
+/* Enhanced popup styling */
+.popup-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Darker */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.popup-content {
+  background-color: #ffffff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.popup-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.popup-body p {
+  margin: 15px 0 0;
+  color: #555;
+}
+
+/* Adding a little animation to the popup for a smoother appearance */
+@keyframes popup {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.popup-content {
+  animation: popup 0.3s ease-out;
+}
+
+
+</style>
 
 
   <!-- contact section -->
   <section class="contact_section layout_padding">
     <div class="container">
-      <div class="heading_container">
-        <h2>
-          Contact Us
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form_container">
-            <form action="">
-              <div>
-                <input type="text" placeholder="Your Name" />
-              </div>
-              <div>
-                <input type="text" placeholder="Phone Number" />
-              </div>
-              <div>
-                <input type="email" placeholder="Email" />
-              </div>
-              <div>
-                <input type="text" class="message-box" placeholder="Message" />
-              </div>
-              <div class="btn_box">
-                <button>
-                  SEND
-                </button>
-              </div>
-            </form>
-          </div>
+        <div class="heading_container">
+            <h2>Contact Us</h2>
         </div>
-        <div class="col-md-6 ">
-          <div class="map_container">
-            <div class="map">
-              <div id="googleMap"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                  <form action="/contact" id="contactForm" method="post"> 
+                    <div>
+                      <input type="text" id="userName" placeholder="Your Name" name="name" />
+                      <span class="error-message" id="nameError"></span>
+                    </div>
+                    <div>
+                      <input type="text" id="phoneNumber" placeholder="Phone Number"name="mobileNumber" />
+                      <span class="error-message" id="phoneError"></span>
+                    </div>
+                    <div>
+                      <input type="email" id="userEmail" placeholder="Email" name="email" />
+                      <span class="error-message" id="emailError"></span>
+                    </div>
+                    <div>
+                      <input type="text" id="userMessage" class="message-box" placeholder="Message" name="message"/>
+                      <span class="error-message" id="messageError"></span>
+                    </div>
+                    <div class="btn_box">
+                      <button type="submit" id="sendButton">
+                        SEND
+                      </button>
+<!-- Popup container -->
+<div id="thankYouPopup" class="popup-container" style="display: none;">
+  <div class="popup-content">
+    <span class="close-btn">&times;</span>
+    <div class="popup-header">
+      <h2>Thank You!</h2>
     </div>
-  </section>
+    <div class="popup-body">
+      <p>Your message has been successfully sent. We appreciate you reaching out and will get back to you soon.</p>
+    </div>
+  </div>
+</div>                    </div>
+                  </form>
+                  
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="map_container">
+                    <div id="googleMap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+  document.getElementById('sendButton').addEventListener('click', function(event) {
+    // Prevent the default action if your button is inside a form
+    event.preventDefault();
+  
+    // Display the popup
+    document.getElementById('thankYouPopup').style.display = 'flex';
+  });
+  
+  // Close the popup when the close button is clicked
+  document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('thankYouPopup').style.display = 'none';
+  });
+  </script>
+  
+<script>
+  document.getElementById('sendButton').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+  
+    // Clear previous error messages
+    document.querySelectorAll('.error-message').forEach(function(errorSpan) {
+      errorSpan.textContent = '';
+    });
+  
+    var hasError = false;
+  
+    // Basic validation
+    var name = document.getElementById('userName').value;
+    var phone = document.getElementById('phoneNumber').value;
+    var email = document.getElementById('userEmail').value;
+    var message = document.getElementById('userMessage').value;
+  
+    if (!name.trim()) {
+      document.getElementById('nameError').textContent = 'Please enter your name.';
+      hasError = true;
+    }
+    if (!phone.trim()) {
+      document.getElementById('phoneError').textContent = 'Please enter your phone number.';
+      hasError = true;
+    }
+    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
+      document.getElementById('emailError').textContent = 'Please enter a valid email.';
+      hasError = true;
+    }
+    if (!message.trim()) {
+      document.getElementById('messageError').textContent = 'Please enter your message.';
+      hasError = true;
+    }
+  
+    // If no errors, submit the form
+    if (!hasError) {
+      document.getElementById('contactForm').submit();
+    }
+  });
+</script>
+
+  
+  
   <!-- end contact section -->
-
-
-  <!-- info section -->
-  <section class="info_section layout_padding2">
-    <div class="container">
-      <div class="info_logo">
-        <h2>
-          HandTime
-        </h2>
-      </div>
-      <div class="row">
-
-        <div class="col-md-3">
-          <div class="info_contact">
-            <h5>
-              About Shop
-            </h5>
-            <div>
-              <div class="img-box">
-                <img src="images/location-white.png" width="18px" alt="">
-              </div>
-              <p>
-                Address
-              </p>
-            </div>
-            <div>
-              <div class="img-box">
-                <img src="images/telephone-white.png" width="12px" alt="">
-              </div>
-              <p>
-                +01 1234567890
-              </p>
-            </div>
-            <div>
-              <div class="img-box">
-                <img src="images/envelope-white.png" width="18px" alt="">
-              </div>
-              <p>
-                demo@gmail.com
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_info">
-            <h5>
-              Informations
-            </h5>
-            <p>
-              ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            </p>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="info_insta">
-            <h5>
-              Instagram
-            </h5>
-            <div class="insta_container">
-              <div class="row m-0">
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w1.png" alt="">
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w2.png" alt="">
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w3.png" alt="">
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w4.png" alt="">
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w5.png" alt="">
-                    </div>
-                  </a>
-                </div>
-                <div class="col-4 px-0">
-                  <a href="">
-                    <div class="insta-box b-1">
-                      <img src="images/w6.png" alt="">
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="info_form ">
-            <h5>
-              Newsletter
-            </h5>
-            <form action="">
-              <input type="email" placeholder="Enter your email">
-              <button>
-                Subscribe
-              </button>
-            </form>
-            <div class="social_box">
-              <a href="">
-                <img src="images/fb.png" alt="">
-              </a>
-              <a href="">
-                <img src="images/twitter.png" alt="">
-              </a>
-              <a href="">
-                <img src="images/linkedin.png" alt="">
-              </a>
-              <a href="">
-                <img src="images/youtube.png" alt="">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- end info_section -->
-
+  <%-include('footer')-%>

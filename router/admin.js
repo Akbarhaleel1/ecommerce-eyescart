@@ -27,7 +27,7 @@ const checkSession = async (req, res, next) => {
 
 
 // getAdmin controllers
-const { getAdminLogin, getAdminDashboard, getAdminOrder, getAdminStatistics, getAdminProducts, getAdminUsers, getAdminOffers, getAddCategory, getadminCategory, getEditCategory, getAddProduct, deleteCategory, getEditProduct, uploads, getBlockUser, getUnblockUser, getListProduct, adminLogOut, getAddOffer, salesPdf, excelReport, adminCoupons, adminBanner, deleteCoupons, editCoupons ,getEditOffers} = require("../controllers/adminController");
+const {contactDelete,getContact, getAdminLogin, getAdminDashboard, getAdminOrder, getAdminStatistics, getAdminProducts, getAdminUsers, getAdminOffers, getAddCategory, getadminCategory, getEditCategory, getAddProduct, deleteCategory, getEditProduct, uploads, getBlockUser, getUnblockUser, getListProduct, adminLogOut, getAddOffer, salesPdf, excelReport, adminCoupons, adminBanner, deleteCoupons, editCoupons ,getEditOffers,getReviews} = require("../controllers/adminController");
 //postAdmin controllers
 const { postAdminLogin, postAdminOffers, postAddCategory, postEditCategery, postAddProduct, deleteProduct, postEditProduct, postUpdateStatus, addOffer, postAddCoupon,editOffer } = require("../controllers/adminController");
 
@@ -142,9 +142,15 @@ router.get("/adminBanner", adminBanner)
 
 router.get('/adminLogOut', adminLogOut)
 
-router.get("/editOffers/:productId",getEditOffers)
+router.get("/editOffers/:productId",checkSession,getEditOffers)
 
-router.post("/postEditOffer",editOffer)
+router.post("/postEditOffer",checkSession,editOffer)
+
+router.get("/adminReview",checkSession,getReviews)
+
+router.get("/adminContact",checkSession,getContact)
+
+router.get("/contactDelete/:id",checkSession,contactDelete)
 
 
 module.exports = router;
